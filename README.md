@@ -1,1 +1,1 @@
-# SecurIOTPractices
+# SecurIOTpractices
