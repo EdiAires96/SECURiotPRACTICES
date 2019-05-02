@@ -3,6 +3,7 @@
 # Author : Édi Aires
 
 # Work in Progress ...
+# TO-DO -> generate a input file with the answers in the final of the questionnarie ; constrution of the final report
 
 import os
 from markdown import markdown
@@ -962,6 +963,7 @@ def processingInformation():
 	print("Processing information.....")
 	print("")
 
+
 	designWithGraphEasy()
 	
 	# escrever o esquema no report
@@ -970,8 +972,14 @@ def processingInformation():
 	f2.write("![alt text](design_schemes.png)")
 	f2.close()
 	
+
 	writeReport()
 
+
+	# after have finished answering all the questions
+	# generate a file with the answers
+
+ 
 
 
 
@@ -1025,7 +1033,16 @@ if __name__ == "__main__":
 	print("")
 	print("")
 
+
 	printData()
+
+	generate_file = open("ans.txt", "w")
+	for i in questions_and_answers:
+		generate_file.write(questions_and_answers[i] +'\n')
+	generate_file.close()
+
+
+
 	
 
 
