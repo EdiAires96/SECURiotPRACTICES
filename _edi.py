@@ -3,6 +3,7 @@
 # Author : Édi Aires
 
 # Work in Progress ...
+# TO-DO -> generate a input file with the answers in the final of the questionnarie ; constrution of the final report
 
 import os
 from markdown import markdown
