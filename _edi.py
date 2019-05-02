@@ -3,7 +3,6 @@
 # Author : Édi Aires
 
 # Work in Progress ...
-# TO-DO -> integrate a input file with answers ; constrution of the final report
 
 import os
 from markdown import markdown
@@ -14,6 +13,8 @@ from reportlab.graphics import renderPM
 
 version = 1
 list = []
+input_list = []
+
 newFile = open("design_schemes.txt", "a+")
 
 
@@ -190,11 +191,28 @@ def NAME():
 '''
 
 # ----------------------------------------------------------------------------
-def readAndWriteFile(fileName):
-	f = open(fileName, "r")
-	contents = f.read()
-	newFile.write(contents)
-	f.close()
+def readInputFromFile():
+
+	# user inputs the file name and checks if the file exists
+	while True:
+		filepath = validateInput(2)
+		if not os.path.isfile(filepath):
+			print("File path {} does not exist...".format(filepath))
+		else:
+			break
+
+
+	with open(filepath,'r') as file:
+		line = file.readline()
+		while line:
+
+			# print file line
+			# print (line.strip() )
+
+			input_list.append(line.strip())
+			line = file.readline()
+
+
 
 
 
@@ -283,7 +301,7 @@ def arqui(version):
  
 
 	while(1):
-		# validate a integer (arg[0]==1 and specify the number avaible options(arg[1]==10))
+		# validate a integer (arg[0]==1 and specify the number available options(arg[1]==10))
 		value=validateInput(1,10)
 		if value == 0:
 			return 
@@ -715,25 +733,33 @@ def printData():
 			if  item == n:
 				list_aux.append( question_1[n] )
 	
-	print("Architeture : " + str(list_aux))
-	
+	#print("Architeture {:>18} ".format(":     ") + ' ; '.join(list_aux))
+	print("{:25} {:3} {:40} ".format("Architeture", ":", ' ; '.join(list_aux) ) )
 
+	
+	# --------------------------------------------
 	for n in question_2:
 		item = questions_and_answers["Q2"]		
 		if  item == n:
-			print( "Has DB : " + question_2[n])
-	
+			# print( "Has DB {:>18} ".format(":     ") + question_2[n])
+			print("{:25} {:3} {:40} ".format("Has DB", ":" , question_2[n]) ) 
+
+
+	# --------------------------------------------
 	for n in question_3:
 		item = questions_and_answers["Q3"]		
 		if  item == n:
-			print( "Type of data storage : " + question_3[n])
+			print( "{:25} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]) )
 
+
+	# --------------------------------------------
 	for n in question_4:
 		item = questions_and_answers["Q4"]		
 		if  item == n:
-			print( "Which DB : " + question_4[n])
+			print("{:25} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
 
 
+	# --------------------------------------------
 	list_aux = []	
 	# it is a multiple question
 	for n in question_5:
@@ -752,26 +778,31 @@ def printData():
 			if  item == n:
 				list_aux.append( question_5[n] )
 	
-	print("Type of data stored : " + str(list_aux))
+	print("{:25} {:3} {:40} ".format("Type of data stored" , ":" , ' ; '.join(list_aux) ) )
 
 
+	# --------------------------------------------
 	for n in question_6:
 		item = questions_and_answers["Q6"]		
 		if  item == n:
-			print( "Authentication : " + question_6[n])
+			print("{:25} {:3} {:40}".format("Authentication", ":" , question_6[n]) )
 
 
+	# --------------------------------------------
 	for n in question_7:
 		item = questions_and_answers["Q7"]		
 		if  item == n:
-			print( "User Registration : " + question_7[n])
+			print("{:25} {:3} {:40}".format("User Registration", ":" , question_7[n]) )
 
+
+	# --------------------------------------------
 	for n in question_8:
 		item = questions_and_answers["Q8"]		
 		if  item == n:
-			print( "Type of Registration : " + question_8[n])
+			print("{:25} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]) )
 
 
+	# --------------------------------------------
 	list_aux = []	
 	# it is a multiple question
 	for n in question_9:
@@ -790,18 +821,21 @@ def printData():
 			if  item == n:
 				list_aux.append( question_9[n] )
 	
-	print("Programming Languages : " + str(list_aux))
+	print("{:25} {:3} {:40} ".format("Programming Languages" , ":" , ' ; '.join(list_aux) ) )
 
 
+	# --------------------------------------------
 	for n in question_10:
 		item = questions_and_answers["Q10"]		
 		if  item == n:
-			print( "Input Forms : " + question_10[n])
+			print("{:25} {:3} {:40} ".format("Input Forms" , ":" , question_10[n]) )
 
+
+	# --------------------------------------------
 	for n in question_11:
 		item = questions_and_answers["Q11"]		
 		if  item == n:
-			print( "Upload Files : " + question_11[n])
+			print("{:25} {:3} {:40} ".format("Upload Files" , ":" , question_11[n]) )
 
 
 
@@ -820,20 +854,90 @@ def informationCapture():
 	version=validateInput(1,3)
 	print("")
 
-	
-	arqui(version)
-	hasDB(version)
 
-	authentication(version)
-	userRegist(version)
-	languages(version)
-	inputForms(version)
-	allowUploadFiles(version)
-	# systemLogs()
+	print("---")
+	print("")	
+	print( "  **Which way do you want to run this tool ?**  ")
+	print("")
+	print("  1 - Answer the questions one by one.  ")
+	print("  2 - Use a text file with the answers already written.  ")
+	print("")
+
+	input_choice = validateInput(1,3)
+	print("")
+
+	# answer the qustions by hand
+	if input_choice == 1:
+		
+		arqui(version)
+		hasDB(version)
+
+		authentication(version)
+		userRegist(version)
+		languages(version)
+		inputForms(version)
+		allowUploadFiles(version)
+		# systemLogs()
 
 
-	# users()
-	# nameOfWebServer()
+		# users()
+		# nameOfWebServer()
+
+
+	# answers already written in the input file	
+	else:
+		print("---")
+		print("")
+		print("  **What is the name of the input file ?**  ")
+		print("")
+		readInputFromFile()
+
+		'''
+		for i in ( input_list[0].split(";") ):
+			print ("{} is {}".format(i, type(i)))
+		'''
+
+		questions_and_answers["Q1"] = input_list[0]
+		questions_and_answers["Q2"] = input_list[1]
+		questions_and_answers["Q3"] = input_list[2]
+		questions_and_answers["Q4"] = input_list[3]
+		questions_and_answers["Q5"] = input_list[4]
+		questions_and_answers["Q6"] = input_list[5]
+		questions_and_answers["Q7"] = input_list[6]
+		questions_and_answers["Q8"] = input_list[7]
+		questions_and_answers["Q9"] = input_list[8]
+		questions_and_answers["Q10"] = input_list[9]
+		questions_and_answers["Q11"] = input_list[10]
+
+
+
+
+
+		'''
+		aux =[]
+		aux2=[]
+
+		for i in ( list[0].split(";") ):
+			print (i)
+			aux.append(i)
+
+		# print(aux)
+
+		for i in ( list[8].split("-") ):
+			print (i)
+			aux2.append(i)
+
+		first_element = aux2[0]
+		rest_elements = aux2[1:]
+		print (aux2)
+		print (first_element)
+		print (rest_elements)
+		'''
+
+
+
+
+
 
 	# print(list)
 	# for p in list: print p
@@ -876,11 +980,11 @@ if __name__ == "__main__":
 
 	print("---")
 	print("")
-	print("#   Welcome")
+	print("#  Welcome to ")
 	print("")
-	print("#  Nome do Programa Ainda Para Atribuir :D")
+	print("#  SECURiotPRACTICES")
 	print("")
-	print ("  The ** NOME do PROGRAMA** is a custom made program.") 
+	print ("  The **SECURiotPRACTICES** is a custom made program.") 
 	print("  This program implements a questionnaire about the development")
 	print("  of a system and generate a report with secure development guides.")
 	print("  It is part of the outputs of project Project SECURIoTESIGN, with funding  ")
@@ -913,10 +1017,13 @@ if __name__ == "__main__":
 
 	print("")
 	for i in questions_and_answers:
-  		print(i + "    -> " + questions_and_answers[i])
+  		# print(i + "    -> " + questions_and_answers[i])
+		# print("{:<10s}{:>4s}{:^12s}".format(i,"->",questions_and_answers[i] ))
+		print("{:7} {:4} {:10}".format(i,"->",questions_and_answers[i] ))
 
 	print("")
-
+	print("")
+	print("")
 
 	printData()
 	
