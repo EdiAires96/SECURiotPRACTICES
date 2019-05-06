@@ -3,7 +3,7 @@
 # Author : Édi Aires
 
 # Work in Progress ...
-# TO-DO -> generate a input file with the answers in the final of the questionnarie ; constrution of the final report
+# TO-DO -> full integration of input file with answers ; constrution of the final report
 
 import os
 from markdown import markdown
@@ -95,8 +95,8 @@ question_4 = {
 
 question_5 = {
 	"1" : "Personal Information",
-	"2" : "Confidential Data ",
-	"3" : "Critical Data ",
+	"2" : "Confidential Data",
+	"3" : "Critical Data",
 	"4" : ""
 }
 
@@ -106,7 +106,7 @@ question_6 = {
 	"3" : "Social Networks / Google",
 	"4" : "SmartCard",
 	"5" : "Biometrics",
-	"6" : "Two Factor Authentication ",
+	"6" : "Two Factor Authentication",
 	"7" : "Multi Factor Authentication"
 }
 
@@ -143,7 +143,7 @@ question_11 = {
 
 
 question_12 = {
-	"1" : "User Activity ",
+	"1" : "User Activity",
 	"2" : "Error Messages",
 	"3" : "Security Violations"
 }
@@ -716,127 +716,164 @@ def writeReport():
 # ----------------------------------------------------------------------------
 def printData():
 
-	list_aux = []	
+	list_aux = []		
 	# it is a multiple question
-	for n in question_1:
 
+	# find if the answer correspond to option "others" (means that is user input text)
+	if questions_and_answers["Q1"].find("9") != -1 :
+
+		# after the number 9 is the user input text and i retrieve it
+		list_aux.append( questions_and_answers["Q1"].split("-")[1:][0])
+
+	else:
+
+		# variable aux is a list that contains the answers chosen by the user to the question in cause
 		# cut the string in the delimitator ";" 
 		aux = questions_and_answers["Q1"].split(";")
 
 		#delete last item (= None)
 		aux = aux[:-1]
-		#print(aux)
+		# print(aux)
 
-		
-		for i in aux:
-			#print(n + " : " + question_1[n])
-			item = i		
-			if  item == n:
-				list_aux.append( question_1[n] )
-	
-	#print("Architeture {:>18} ".format(":     ") + ' ; '.join(list_aux))
-	print("{:25} {:3} {:40} ".format("Architeture", ":", ' ; '.join(list_aux) ) )
+		# iterate the answers chosen by the user
+		for item in aux:
 
-	
+			# iterate the options of the question and check what the chosen answers match
+			for option in question_1:
+				if item == option:
+					list_aux.append( question_1[option] )
+
+			# case of user input text
+			if item.isdigit() == False: 
+				list_aux.append (item)
+
+		'''
+		can put this code above (case of user input text) in other way : 
+		if cant find the answer in the options of the question_1, add the item(= user input text)
+		'''
+
+	# print(list_aux)
+	print("{:22} {:3} {:40} ".format("Architeture", ":", ' ; '.join(list_aux) ) )
+
+
 	# --------------------------------------------
 	for n in question_2:
 		item = questions_and_answers["Q2"]		
 		if  item == n:
 			# print( "Has DB {:>18} ".format(":     ") + question_2[n])
-			print("{:25} {:3} {:40} ".format("Has DB", ":" , question_2[n]) ) 
+			print("{:22} {:3} {:40} ".format("Has DB", ":" , question_2[n]) ) 
 
 
 	# --------------------------------------------
 	for n in question_3:
 		item = questions_and_answers["Q3"]		
 		if  item == n:
-			print( "{:25} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]) )
+			print( "{:22} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]) )
 
 
 	# --------------------------------------------
 	for n in question_4:
 		item = questions_and_answers["Q4"]		
 		if  item == n:
-			print("{:25} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
+			print("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
 
 
-	# --------------------------------------------
+	# --------------------------------------------	
 	list_aux = []	
 	# it is a multiple question
-	for n in question_5:
 
+	# find if the answer correspond to option "others" (means that is user input text)
+	if questions_and_answers["Q5"].find("9") != -1 :
+
+		# after the number 9 is the user input text and i retrieve it
+		list_aux.append( questions_and_answers["Q5"].split("-")[1:][0])
+
+	else:
+
+		# variable aux is a list that contains the answers chosen by the user to the question in cause
 		# cut the string in the delimitator ";" 
 		aux = questions_and_answers["Q5"].split(";")
 
 		#delete last item (= None)
 		aux = aux[:-1]
-		#print(aux)
 
-		
-		for i in aux:
-			#print(n + " : " + question_1[n])
-			item = i		
-			if  item == n:
-				list_aux.append( question_5[n] )
-	
-	print("{:25} {:3} {:40} ".format("Type of data stored" , ":" , ' ; '.join(list_aux) ) )
+		for item in aux:
+			for option in question_5:		
+				if  item == option:
+					list_aux.append( question_5[option] )
+
+			# case of user input text
+			if item.isdigit() == False: 
+				list_aux.append (item)
+
+	print("{:22} {:3} {:40} ".format("Type of data stored" , ":" , ' ; '.join(list_aux) ) )
+
 
 
 	# --------------------------------------------
 	for n in question_6:
 		item = questions_and_answers["Q6"]		
 		if  item == n:
-			print("{:25} {:3} {:40}".format("Authentication", ":" , question_6[n]) )
+			print("{:22} {:3} {:40}".format("Authentication", ":" , question_6[n]) )
 
 
 	# --------------------------------------------
 	for n in question_7:
 		item = questions_and_answers["Q7"]		
 		if  item == n:
-			print("{:25} {:3} {:40}".format("User Registration", ":" , question_7[n]) )
+			print("{:22} {:3} {:40}".format("User Registration", ":" , question_7[n]) )
 
 
 	# --------------------------------------------
 	for n in question_8:
 		item = questions_and_answers["Q8"]		
 		if  item == n:
-			print("{:25} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]) )
+			print("{:22} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]) )
 
 
 	# --------------------------------------------
 	list_aux = []	
 	# it is a multiple question
-	for n in question_9:
+	
+	# find if the answer correspond to option "others" (means that is only user input text)
+	if questions_and_answers["Q9"].find("9") != -1 :
+			# after the number 9 is the user input text and i retrieve it
+			list_aux.append( questions_and_answers["Q9"].split("-")[1:][0] )
+
+	else:
 
 		# cut the string in the delimitator ";" 
 		aux = questions_and_answers["Q9"].split(";")
 
 		#delete last item (= None)
 		aux = aux[:-1]
-		#print(aux)
+		print(aux)
 
-		
-		for i in aux:
-			#print(n + " : " + question_1[n])
-			item = i		
-			if  item == n:
-				list_aux.append( question_9[n] )
+			
+		for item in aux:
+			for option in question_9:		
+				if  item == option:
+					list_aux.append( question_9[option] )
+
+			# case of user input text
+			if item.isdigit() == False: 
+				list_aux.append (item)
 	
-	print("{:25} {:3} {:40} ".format("Programming Languages" , ":" , ' ; '.join(list_aux) ) )
+	print("{:22} {:3} {:40} ".format("Programming Languages" , ":" , ' ; '.join(list_aux) ) )
 
 
 	# --------------------------------------------
 	for n in question_10:
 		item = questions_and_answers["Q10"]		
 		if  item == n:
-			print("{:25} {:3} {:40} ".format("Input Forms" , ":" , question_10[n]) )
+			print("{:22} {:3} {:40} ".format("Input Forms" , ":" , question_10[n]) )
 
 
 	# --------------------------------------------
 	for n in question_11:
 		item = questions_and_answers["Q11"]		
 		if  item == n:
-			print("{:25} {:3} {:40} ".format("Upload Files" , ":" , question_11[n]) )
+			print("{:22} {:3} {:40} ".format("Upload Files" , ":" , question_11[n]) )
 
 
 
@@ -898,7 +935,8 @@ def informationCapture():
 			print ("{} is {}".format(i, type(i)))
 		'''
 
-		questions_and_answers["Q1"] = input_list[0]
+		
+		questions_and_answers["Q1"] = input_list[0]	
 		questions_and_answers["Q2"] = input_list[1]
 		questions_and_answers["Q3"] = input_list[2]
 		questions_and_answers["Q4"] = input_list[3]
