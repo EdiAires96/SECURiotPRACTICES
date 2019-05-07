@@ -1,0 +1,59 @@
+
+# Write a file with the answers to the questions
+
+
+## Instrutions 
+
+
+* Each line is a question
+
+
+* Single choice answer must be a digit that correspond to the respective option in the question.
+
+	** Example : 1
+
+
+* Multiple choice questions must be answered on the respective line with the delimitador charater " ; " and END with it.
+
+	** Example : 1;2;3;
+
+
+( If one answer is chosen in this type of question, the line must end it ";" )
+
+	** Example : 2;
+
+
+( If multiple answers are chosen and one of the answer correspond to a user input text answer (option which correspond to "others"),
+the line is written has the same behavior as only digits, with the user input text answer written in letters)
+
+	** Example : 1;2;user input text;5;
+
+
+If the answer is only the user input text ( option "others") the answer must be the digit that corresponde to the option in the question follow by the caracter " - " and finally ahead the user input text. (no need to end with ";" )
+
+	** Example : 9-user input text;
+
+
+* It is possible to add comments to the answer. Just add the character '#' and write the comment in front of it.
+
+	** Example : 1;4;		# web app , mobile
+
+
+
+	> Full example of a file with the answers written : 
+
+
+1;2;4;raspery;
+1
+1
+2
+3;		# critical data
+7
+1
+2
+8-other language
+2
+1
+
+	
+

@@ -14,6 +14,8 @@ from reportlab.graphics import renderPM
 
 version = 1
 list = []
+
+# list that contains to answers in the written file
 input_list = []
 
 newFile = open("design_schemes.txt", "a+")
@@ -207,10 +209,11 @@ def readInputFromFile():
 		line = file.readline()
 		while line:
 
-			# print file line
-			# print (line.strip() )
+			# print (line.strip())
+			# print (line.split('#')[0].strip() )
 
-			input_list.append(line.strip())
+			# read line until character '#' which means after that is a comment
+			input_list.append(line.split('#')[0].strip())
 			line = file.readline()
 
 
@@ -716,6 +719,13 @@ def writeReport():
 # ----------------------------------------------------------------------------
 def printData():
 
+	generate_file = open("ans.txt", "w")
+
+	# add the answers (output) to a list to write as the respective answers and comments in the generated file with answers
+	answers_list=[]
+	comments_list=[]
+	
+
 	list_aux = []		
 	# it is a multiple question
 
@@ -755,13 +765,19 @@ def printData():
 	# print(list_aux)
 	print("{:22} {:3} {:40} ".format("Architeture", ":", ' ; '.join(list_aux) ) )
 
+	answers_list.append(questions_and_answers["Q1"])
+	comments_list.append(' ; '.join(list_aux))
 
+	
 	# --------------------------------------------
 	for n in question_2:
 		item = questions_and_answers["Q2"]		
 		if  item == n:
 			# print( "Has DB {:>18} ".format(":     ") + question_2[n])
-			print("{:22} {:3} {:40} ".format("Has DB", ":" , question_2[n]) ) 
+			print("{:22} {:3} {:40} ".format("Has DB", ":" , question_2[n]) )
+
+			answers_list.append(questions_and_answers["Q2"])
+			comments_list.append(question_2[n])
 
 
 	# --------------------------------------------
@@ -770,6 +786,8 @@ def printData():
 		if  item == n:
 			print( "{:22} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]) )
 
+			answers_list.append(questions_and_answers["Q3"])
+			comments_list.append(question_3[n])
 
 	# --------------------------------------------
 	for n in question_4:
@@ -777,13 +795,16 @@ def printData():
 		if  item == n:
 			print("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
 
+			answers_list.append(questions_and_answers["Q4"])
+			comments_list.append(question_4[n])
+
 
 	# --------------------------------------------	
 	list_aux = []	
 	# it is a multiple question
 
 	# find if the answer correspond to option "others" (means that is user input text)
-	if questions_and_answers["Q5"].find("9") != -1 :
+	if questions_and_answers["Q5"].find("4") != -1 :
 
 		# after the number 9 is the user input text and i retrieve it
 		list_aux.append( questions_and_answers["Q5"].split("-")[1:][0])
@@ -808,6 +829,9 @@ def printData():
 
 	print("{:22} {:3} {:40} ".format("Type of data stored" , ":" , ' ; '.join(list_aux) ) )
 
+	answers_list.append(questions_and_answers["Q5"])
+	comments_list.append(' ; '.join(list_aux))
+
 
 
 	# --------------------------------------------
@@ -816,12 +840,18 @@ def printData():
 		if  item == n:
 			print("{:22} {:3} {:40}".format("Authentication", ":" , question_6[n]) )
 
+			answers_list.append(questions_and_answers["Q6"])
+			comments_list.append(question_6[n])
+
 
 	# --------------------------------------------
 	for n in question_7:
 		item = questions_and_answers["Q7"]		
 		if  item == n:
 			print("{:22} {:3} {:40}".format("User Registration", ":" , question_7[n]) )
+
+			answers_list.append(questions_and_answers["Q7"])
+			comments_list.append(question_7[n])
 
 
 	# --------------------------------------------
@@ -830,13 +860,16 @@ def printData():
 		if  item == n:
 			print("{:22} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]) )
 
+			answers_list.append(questions_and_answers["Q8"])
+			comments_list.append(question_8[n])
+
 
 	# --------------------------------------------
 	list_aux = []	
 	# it is a multiple question
 	
 	# find if the answer correspond to option "others" (means that is only user input text)
-	if questions_and_answers["Q9"].find("9") != -1 :
+	if questions_and_answers["Q9"].find("8") != -1 :
 			# after the number 9 is the user input text and i retrieve it
 			list_aux.append( questions_and_answers["Q9"].split("-")[1:][0] )
 
@@ -861,12 +894,19 @@ def printData():
 	
 	print("{:22} {:3} {:40} ".format("Programming Languages" , ":" , ' ; '.join(list_aux) ) )
 
+	answers_list.append(questions_and_answers["Q9"])
+	comments_list.append(' ; '.join(list_aux))
+
 
 	# --------------------------------------------
 	for n in question_10:
 		item = questions_and_answers["Q10"]		
 		if  item == n:
 			print("{:22} {:3} {:40} ".format("Input Forms" , ":" , question_10[n]) )
+
+			answers_list.append(questions_and_answers["Q10"])
+			comments_list.append(question_10[n])
+			
 
 
 	# --------------------------------------------
@@ -875,7 +915,14 @@ def printData():
 		if  item == n:
 			print("{:22} {:3} {:40} ".format("Upload Files" , ":" , question_11[n]) )
 
+			answers_list.append(questions_and_answers["Q11"])
+			comments_list.append(question_11[n])
 
+	# --------------------------------------------
+	for i in range(0,len(answers_list)):
+		generate_file.write( "{:18}{:3}{:20}\n".format(answers_list[i] , " # " , comments_list[i] ) )
+
+	generate_file.close()
 
 #############################################################################################################
 
@@ -952,34 +999,6 @@ def informationCapture():
 
 
 
-		'''
-		aux =[]
-		aux2=[]
-
-		for i in ( list[0].split(";") ):
-			print (i)
-			aux.append(i)
-
-		# print(aux)
-
-		for i in ( list[8].split("-") ):
-			print (i)
-			aux2.append(i)
-
-		first_element = aux2[0]
-		rest_elements = aux2[1:]
-		print (aux2)
-		print (first_element)
-		print (rest_elements)
-		'''
-
-
-
-
-
-
-	# print(list)
-	# for p in list: print p
 
 
 	'''
@@ -1074,10 +1093,7 @@ if __name__ == "__main__":
 
 	printData()
 
-	generate_file = open("ans.txt", "w")
-	for i in questions_and_answers:
-		generate_file.write(questions_and_answers[i] +'\n')
-	generate_file.close()
+	
 
 
 
