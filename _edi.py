@@ -13,11 +13,11 @@ from reportlab.graphics import renderPM
 
 
 version = 1
-list = []
 
 # list that contains to answers in the written file
 input_list = []
 
+# file to write code that will design the schematics
 newFile = open("design_schemes.txt", "a+")
 
 
@@ -312,11 +312,11 @@ def arqui(version):
 		if value == 9:
 			print( "  Please specify the architeture: (name between quotes)  ")			
 			value2=validateInput(2)
-			question_1["9"] = str(value2)
+			# question_1["9"] = str(value2)
+			questions_and_answers["Q1"]=questions_and_answers["Q1"] + str(value2) + ";"
 
-		list.append("Q1-" + str(value))
-
-		questions_and_answers["Q1"]=questions_and_answers["Q1"] + str(value) + ";"
+		else:
+			questions_and_answers["Q1"]=questions_and_answers["Q1"] + str(value) + ";"
 		
 
 
@@ -347,7 +347,6 @@ def hasDB(version):
 	print("")
 
 	value=validateInput(1,3)
-	list.append("Q2-" + str(value))
 	questions_and_answers["Q2"]=str(value)
 	
 	
@@ -378,7 +377,6 @@ def typeOfDatabase(version):
 	print("")
 
 	value = validateInput(1,5) 
-	list.append("Q3-" + str( value ) )
 	questions_and_answers["Q3"]=str(value)
 
 
@@ -409,11 +407,10 @@ def whichDatabase(version):
 	value=validateInput(1,12)
 	if value == 11:
 		print( "  Please specify the name of database: (name between quotes)  ")
-		# TO-DO change this funtion input
-		value=validateInput(2)
-	
-	list.append("Q4-" + str(value))
-	questions_and_answers["Q4"]=str(value)
+		value2=validateInput(2)
+		questions_and_answers["Q4"]=str(value2)
+	else:
+		questions_and_answers["Q4"]=str(value)
 
 
 # ----------------------------------------------------------------------------
@@ -433,8 +430,6 @@ def sensitiveData(version):
 	print( "  3 - Critical Data  ")
 	print( "  4 - Other  ")
 	print("")
-
-	# list.append("Q5-" + str(value))
 	
 	while(1):
 		value=validateInput(1,5)
@@ -444,10 +439,11 @@ def sensitiveData(version):
 			print( "  Please specify the architeture: (name between quotes)  ")
 			# TO-DO change this funtion input
 			value2=validateInput(2)
-			question_5["4"] = str(value2)
+			#question_5["4"] = str(value2)
+			questions_and_answers["Q5"]=questions_and_answers["Q5"] + str(value2) + ";"
 
-		list.append("Q5-" + str(value))
-		questions_and_answers["Q5"]=questions_and_answers["Q5"] + str(value) + ";"
+		else:
+			questions_and_answers["Q5"]=questions_and_answers["Q5"] + str(value) + ";"
 
 
 # ----------------------------------------------------------------------------
@@ -470,7 +466,6 @@ def authentication(version):
 	print("")
 
 	value = validateInput(1,8)
-	list.append("Q6-" + str( value ))
 	questions_and_answers["Q6"]=str(value)
 
 
@@ -489,8 +484,6 @@ def userRegist(version):
 	print("")
 
 	value = validateInput(1,3)
-
-	list.append("Q7-" + str(value))
 	questions_and_answers["Q7"]=str(value)
 
 	if value == 1 :
@@ -512,7 +505,6 @@ def typeOfUserRegist(version):
 	print("")
 
 	value = validateInput(1,3)
-	list.append("Q8-" + str( value ))
 	questions_and_answers["Q8"]=str(value)
 
 
@@ -546,10 +538,11 @@ def languages(version):
 			print( "  Please specify the programming language: (name between quotes)  ")
 			# TO-DO change this funtion input
 			value2=validateInput(2)
-			question_9["8"]  = str(value2)
+			# question_9["8"]  = str(value2)
+			questions_and_answers["Q9"]=questions_and_answers["Q9"] + str(value2) + ";"
 
-		list.append("Q9-" + str(value))
-		questions_and_answers["Q9"]=questions_and_answers["Q9"] + str(value) + ";"
+		else:
+			questions_and_answers["Q9"]=questions_and_answers["Q9"] + str(value) + ";"
 
 
 # ----------------------------------------------------------------------------
@@ -567,7 +560,6 @@ def inputForms(version):
 	print("")
 
 	value = validateInput(1,3)
-	list.append("Q10-" + str(value))
 	questions_and_answers["Q10"]=str(value)
 
 
@@ -586,7 +578,6 @@ def allowUploadFiles(version):
 	print("")
 
 	value = validateInput(1,3)
-	list.append("Q11-" + str( value ))
 	questions_and_answers["Q11"]=str(value)
 
 
@@ -607,7 +598,6 @@ def systemLogs(version):
 	print("")
 
 	value = validateInput(1,4)
-	list.append("Q12-" + str( value ))
 	questions_and_answers["Q12"]=questions_and_answers["Q12"] + str(value) + ";"
 
 
@@ -640,7 +630,7 @@ def deployment():
 	print( "  4 - Private Cloud  ")
 	print("")
 	list.append("Q5-" + str(input("  > ")))
-'''
+
 
 
 def nameOfWebServer(version):
@@ -660,7 +650,7 @@ def nameOfWebServer(version):
 	print("")
 
 	list.append("Q-" + str(input("  > ")))
-
+'''
 
 ##############################################################################################
 
@@ -729,7 +719,7 @@ def printData():
 	list_aux = []		
 	# it is a multiple question
 
-	# find if the answer correspond to option "others" (means that is user input text)
+	# find if the answer correspond to option "others" (means that is user input text) OR fix this buy make it simple, verify if it the answer has only letters xD
 	if questions_and_answers["Q1"].find("9") != -1 :
 
 		# after the number 9 is the user input text and i retrieve it
@@ -790,13 +780,23 @@ def printData():
 			comments_list.append(question_3[n])
 
 	# --------------------------------------------
+
+	'''fix a bug in here'''
+	
+    
 	for n in question_4:
-		item = questions_and_answers["Q4"]		
-		if  item == n:
+		item = questions_and_answers["Q4"]	
+		if  item == n :
 			print("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
 
 			answers_list.append(questions_and_answers["Q4"])
 			comments_list.append(question_4[n])
+
+	# case of user input text
+	if item.isdigit() == False: 
+		print("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
+		answers_list.append(questions_and_answers["Q4"])
+		comments_list.append(item)
 
 
 	# --------------------------------------------	
@@ -880,7 +880,6 @@ def printData():
 
 		#delete last item (= None)
 		aux = aux[:-1]
-		print(aux)
 
 			
 		for item in aux:
@@ -1069,7 +1068,7 @@ if __name__ == "__main__":
 
 	
 	informationCapture()
-	# processingInformation()	
+	processingInformation()	
 
 
 	print("")
