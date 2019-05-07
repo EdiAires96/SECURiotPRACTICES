@@ -356,7 +356,11 @@ def hasDB(version):
 		typeOfDatabase(version)
 		whichDatabase(version)
 		sensitiveData(version)
+
 	else:
+		questions_and_answers["Q3"]="N/A"
+		questions_and_answers["Q4"]="N/A"
+		questions_and_answers["Q5"]="N/A"
 		return
 
 
@@ -488,6 +492,8 @@ def userRegist(version):
 
 	if value == 1 :
 		typeOfUserRegist(version)
+	else:
+		questions_and_answers["Q8"] = "N/A"
 
 
 # ----------------------------------------------------------------------------
@@ -720,10 +726,9 @@ def printData():
 	# it is a multiple question
 
 	# find if the answer correspond to option "others" (means that is user input text) OR fix this buy make it simple, verify if it the answer has only letters xD
-	if questions_and_answers["Q1"].find("9") != -1 :
-
-		# after the number 9 is the user input text and i retrieve it
-		list_aux.append( questions_and_answers["Q1"].split("-")[1:][0])
+	# find if the first caracter is a letter
+	if questions_and_answers["Q1"][0].isdigit() == False :
+		list_aux.append( questions_and_answers["Q1"])
 
 	else:
 
@@ -733,7 +738,7 @@ def printData():
 
 		#delete last item (= None)
 		aux = aux[:-1]
-		# print(aux)
+		print(aux)
 
 		# iterate the answers chosen by the user
 		for item in aux:
@@ -771,21 +776,27 @@ def printData():
 
 
 	# --------------------------------------------
-	for n in question_3:
-		item = questions_and_answers["Q3"]		
-		if  item == n:
-			print( "{:22} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]) )
+	item = questions_and_answers["Q3"]
+	# case this question is not answered, and the answer it will be "N/A"
+	if questions_and_answers["Q3"].isdigit() == False :
+		print( "{:22} {:3} {:40} ".format("Type of data storage", ":",  item) )
 
-			answers_list.append(questions_and_answers["Q3"])
-			comments_list.append(question_3[n])
+		answers_list.append(questions_and_answers["Q3"])
+		comments_list.append(item)
+	
+	else:
+
+		for n in question_3:					
+			if  item == n:
+				print( "{:22} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]) )
+
+				answers_list.append(questions_and_answers["Q3"])
+				comments_list.append(question_3[n])
 
 	# --------------------------------------------
 
-	'''fix a bug in here'''
-	
-    
-	for n in question_4:
-		item = questions_and_answers["Q4"]	
+	item = questions_and_answers["Q4"]	
+	for n in question_4:		
 		if  item == n :
 			print("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
 
@@ -794,7 +805,7 @@ def printData():
 
 	# case of user input text
 	if item.isdigit() == False: 
-		print("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
+		print("{:22} {:3} {:40} ".format( "Which DB", ":", item ) )
 		answers_list.append(questions_and_answers["Q4"])
 		comments_list.append(item)
 
@@ -803,11 +814,9 @@ def printData():
 	list_aux = []	
 	# it is a multiple question
 
-	# find if the answer correspond to option "others" (means that is user input text)
-	if questions_and_answers["Q5"].find("4") != -1 :
-
-		# after the number 9 is the user input text and i retrieve it
-		list_aux.append( questions_and_answers["Q5"].split("-")[1:][0])
+	# find if the answer correspond to option "others" (means that is user input text) or not answered
+	if questions_and_answers["Q5"][0].isdigit() == False :
+		list_aux.append( questions_and_answers["Q5"])
 
 	else:
 
@@ -855,13 +864,20 @@ def printData():
 
 
 	# --------------------------------------------
-	for n in question_8:
-		item = questions_and_answers["Q8"]		
-		if  item == n:
-			print("{:22} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]) )
+	item = questions_and_answers["Q8"]
+	if questions_and_answers["Q8"].isdigit() == False:
+		print("{:22} {:3} {:40} ".format("Type of Registration", ": " , item) )
 
-			answers_list.append(questions_and_answers["Q8"])
-			comments_list.append(question_8[n])
+		answers_list.append(questions_and_answers["Q8"])
+		comments_list.append(item)
+
+	else :
+		for n in question_8:
+			if  item == n:
+				print("{:22} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]) )
+
+				answers_list.append(questions_and_answers["Q8"])
+				comments_list.append(question_8[n])
 
 
 	# --------------------------------------------
@@ -869,9 +885,8 @@ def printData():
 	# it is a multiple question
 	
 	# find if the answer correspond to option "others" (means that is only user input text)
-	if questions_and_answers["Q9"].find("8") != -1 :
-			# after the number 9 is the user input text and i retrieve it
-			list_aux.append( questions_and_answers["Q9"].split("-")[1:][0] )
+	if questions_and_answers["Q9"][0].isdigit() == False :
+		list_aux.append( questions_and_answers["Q9"])
 
 	else:
 
@@ -917,9 +932,10 @@ def printData():
 			answers_list.append(questions_and_answers["Q11"])
 			comments_list.append(question_11[n])
 
-	# --------------------------------------------
+	# -------------------------------------------
+	# write / generate a file with all answers
 	for i in range(0,len(answers_list)):
-		generate_file.write( "{:18}{:3}{:20}\n".format(answers_list[i] , " # " , comments_list[i] ) )
+		generate_file.write( "{:20}{:3}{:20}\n".format(answers_list[i] , " # " , comments_list[i] ) )
 
 	generate_file.close()
 
@@ -1068,7 +1084,7 @@ if __name__ == "__main__":
 
 	
 	informationCapture()
-	processingInformation()	
+	# processingInformation()	
 
 
 	print("")
