@@ -29,9 +29,9 @@ the line is written has the same behavior as only digits, with the user input te
 	** Example : 1;2;user input text;5;
 
 
-If the answer is only the user input text ( option "others") the answer must be the digit that corresponde to the option in the question follow by the caracter " - " and finally ahead the user input text. (no need to end with ";" )
+If the answer is only the user input text ( option "others") just write the answer (user input text). (no need to end with ";" )
 
-	** Example : 9-user input text;
+	** Example : user input text
 
 
 * It is possible to add comments to the answer. Just add the character '#' and write the comment in front of it.

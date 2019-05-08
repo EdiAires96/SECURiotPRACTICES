@@ -17,6 +17,11 @@ version = 1
 # list that contains to answers in the written file
 input_list = []
 
+# add the answers (output) to a list to write as the respective answers and comments in the generated file with answers
+answers_list=[]
+comments_list=[]
+table_for_report=[]
+
 # file to write code that will design the schematics
 newFile = open("design_schemes.txt", "a+")
 
@@ -692,11 +697,12 @@ def designWithGraphEasy():
 
 # ----------------------------------------------------------------------------
 # function to convert the markdown report to html and pdf format
-def writeReport():
-	input_filename = ("guides/example_report.md")
+def convertReport():
+	# input_filename = ("guides/example_report.md")
 	# input_filename = "some_markdown.md")
+	input_filename = ("FINAL_REPORT.md")
 
-	output_filename = ("report99.html")
+	output_filename = ("FINAL_REPORT.html")
 
 	with open(input_filename,"r") as f:
 		html_text = markdown(f.read())
@@ -707,7 +713,7 @@ def writeReport():
 
 	# writing in pdf file, the html content
 
-	resultFile = open("report99.pdf", "w+b")
+	resultFile = open("FINAL_REPORT.pdf", "w+b")
 	pisastatus = pisa.CreatePDF(html_text, dest=resultFile)
 	print( pisastatus)
 
@@ -715,19 +721,14 @@ def writeReport():
 # ----------------------------------------------------------------------------
 def printData():
 
-	generate_file = open("ans.txt", "w")
-
-	# add the answers (output) to a list to write as the respective answers and comments in the generated file with answers
-	answers_list=[]
-	comments_list=[]
-	
+	generate_file = open("ans.txt", "w")	
 
 	list_aux = []		
 	# it is a multiple question
 
 	# find if the answer correspond to option "others" (means that is user input text) OR fix this buy make it simple, verify if it the answer has only letters xD
-	# find if the first caracter is a letter
-	if questions_and_answers["Q1"][0].isdigit() == False :
+	# find if the first caracter is a letter and if the answer has no more options
+	if questions_and_answers["Q1"][0].isdigit() == False and questions_and_answers["Q1"].find(";") == -1 :
 		list_aux.append( questions_and_answers["Q1"])
 
 	else:
@@ -738,7 +739,7 @@ def printData():
 
 		#delete last item (= None)
 		aux = aux[:-1]
-		print(aux)
+		# print(aux)
 
 		# iterate the answers chosen by the user
 		for item in aux:
@@ -759,6 +760,7 @@ def printData():
 
 	# print(list_aux)
 	print("{:22} {:3} {:40} ".format("Architeture", ":", ' ; '.join(list_aux) ) )
+	table_for_report.append("{:22} {:3} {:40} ".format("Architeture", ":", ' ; '.join(list_aux) ))
 
 	answers_list.append(questions_and_answers["Q1"])
 	comments_list.append(' ; '.join(list_aux))
@@ -770,6 +772,7 @@ def printData():
 		if  item == n:
 			# print( "Has DB {:>18} ".format(":     ") + question_2[n])
 			print("{:22} {:3} {:40} ".format("Has DB", ":" , question_2[n]) )
+			table_for_report.append("{:22} {:3} {:40} ".format("Has DB", ":" , question_2[n]))
 
 			answers_list.append(questions_and_answers["Q2"])
 			comments_list.append(question_2[n])
@@ -780,6 +783,7 @@ def printData():
 	# case this question is not answered, and the answer it will be "N/A"
 	if questions_and_answers["Q3"].isdigit() == False :
 		print( "{:22} {:3} {:40} ".format("Type of data storage", ":",  item) )
+		table_for_report.append("{:22} {:3} {:40} ".format("Type of data storage", ":",  item))
 
 		answers_list.append(questions_and_answers["Q3"])
 		comments_list.append(item)
@@ -789,6 +793,7 @@ def printData():
 		for n in question_3:					
 			if  item == n:
 				print( "{:22} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]) )
+				table_for_report.append("{:22} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]))
 
 				answers_list.append(questions_and_answers["Q3"])
 				comments_list.append(question_3[n])
@@ -799,13 +804,16 @@ def printData():
 	for n in question_4:		
 		if  item == n :
 			print("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
-
+			table_for_report.append("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]))
+	
 			answers_list.append(questions_and_answers["Q4"])
 			comments_list.append(question_4[n])
 
 	# case of user input text
 	if item.isdigit() == False: 
 		print("{:22} {:3} {:40} ".format( "Which DB", ":", item ) )
+		table_for_report.append("{:22} {:3} {:40} ".format( "Which DB", ":", item ))
+
 		answers_list.append(questions_and_answers["Q4"])
 		comments_list.append(item)
 
@@ -815,7 +823,7 @@ def printData():
 	# it is a multiple question
 
 	# find if the answer correspond to option "others" (means that is user input text) or not answered
-	if questions_and_answers["Q5"][0].isdigit() == False :
+	if questions_and_answers["Q5"][0].isdigit() == False and questions_and_answers["Q5"].find(";") == -1:
 		list_aux.append( questions_and_answers["Q5"])
 
 	else:
@@ -837,6 +845,7 @@ def printData():
 				list_aux.append (item)
 
 	print("{:22} {:3} {:40} ".format("Type of data stored" , ":" , ' ; '.join(list_aux) ) )
+	table_for_report.append("{:22} {:3} {:40} ".format("Type of data stored" , ":" , ' ; '.join(list_aux) ))
 
 	answers_list.append(questions_and_answers["Q5"])
 	comments_list.append(' ; '.join(list_aux))
@@ -848,6 +857,7 @@ def printData():
 		item = questions_and_answers["Q6"]		
 		if  item == n:
 			print("{:22} {:3} {:40}".format("Authentication", ":" , question_6[n]) )
+			table_for_report.append("{:22} {:3} {:40}".format("Authentication", ":" , question_6[n]))
 
 			answers_list.append(questions_and_answers["Q6"])
 			comments_list.append(question_6[n])
@@ -858,6 +868,7 @@ def printData():
 		item = questions_and_answers["Q7"]		
 		if  item == n:
 			print("{:22} {:3} {:40}".format("User Registration", ":" , question_7[n]) )
+			table_for_report.append("{:22} {:3} {:40}".format("User Registration", ":" , question_7[n]))
 
 			answers_list.append(questions_and_answers["Q7"])
 			comments_list.append(question_7[n])
@@ -867,6 +878,7 @@ def printData():
 	item = questions_and_answers["Q8"]
 	if questions_and_answers["Q8"].isdigit() == False:
 		print("{:22} {:3} {:40} ".format("Type of Registration", ": " , item) )
+		table_for_report.append("{:22} {:3} {:40} ".format("Type of Registration", ": " , item))
 
 		answers_list.append(questions_and_answers["Q8"])
 		comments_list.append(item)
@@ -875,6 +887,7 @@ def printData():
 		for n in question_8:
 			if  item == n:
 				print("{:22} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]) )
+				table_for_report.append("{:22} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]))
 
 				answers_list.append(questions_and_answers["Q8"])
 				comments_list.append(question_8[n])
@@ -885,7 +898,7 @@ def printData():
 	# it is a multiple question
 	
 	# find if the answer correspond to option "others" (means that is only user input text)
-	if questions_and_answers["Q9"][0].isdigit() == False :
+	if questions_and_answers["Q9"][0].isdigit() == False and questions_and_answers["Q9"].find(";") == -1:
 		list_aux.append( questions_and_answers["Q9"])
 
 	else:
@@ -907,6 +920,7 @@ def printData():
 				list_aux.append (item)
 	
 	print("{:22} {:3} {:40} ".format("Programming Languages" , ":" , ' ; '.join(list_aux) ) )
+	table_for_report.append("{:22} {:3} {:40} ".format("Programming Languages" , ":" , ' ; '.join(list_aux) ))
 
 	answers_list.append(questions_and_answers["Q9"])
 	comments_list.append(' ; '.join(list_aux))
@@ -917,6 +931,7 @@ def printData():
 		item = questions_and_answers["Q10"]		
 		if  item == n:
 			print("{:22} {:3} {:40} ".format("Input Forms" , ":" , question_10[n]) )
+			table_for_report.append("{:22} {:3} {:40} ".format("Input Forms" , ":" , question_10[n]))
 
 			answers_list.append(questions_and_answers["Q10"])
 			comments_list.append(question_10[n])
@@ -928,6 +943,7 @@ def printData():
 		item = questions_and_answers["Q11"]		
 		if  item == n:
 			print("{:22} {:3} {:40} ".format("Upload Files" , ":" , question_11[n]) )
+			table_for_report.append("{:22} {:3} {:40} ".format("Upload Files" , ":" , question_11[n]))
 
 			answers_list.append(questions_and_answers["Q11"])
 			comments_list.append(question_11[n])
@@ -1012,10 +1028,6 @@ def informationCapture():
 
 
 
-
-
-
-
 	'''
 	# teste para mostrar no terminal o esquema
 	newFile=open("design_schemes.txt", "r")
@@ -1035,7 +1047,23 @@ def processingInformation():
 	print("Processing information.....")
 	print("")
 
+	printData()
 
+
+
+	report = open("FINAL_REPORT.md", "w")
+	report.write("# Final Report  " +'\n')
+	report.write("")
+	for l in table_for_report:
+		report.write(l + '\n')
+	
+
+
+
+
+
+
+	'''
 	designWithGraphEasy()
 	
 	# escrever o esquema no report
@@ -1045,15 +1073,10 @@ def processingInformation():
 	f2.close()
 	
 
-	writeReport()
+	convertReport()
 
-
-	# after have finished answering all the questions
-	# generate a file with the answers
-
- 
-
-
+	report.close()
+ '''
 
 
 if __name__ == "__main__":
@@ -1084,7 +1107,7 @@ if __name__ == "__main__":
 
 	
 	informationCapture()
-	# processingInformation()	
+	processingInformation()	
 
 
 	print("")
@@ -1106,13 +1129,6 @@ if __name__ == "__main__":
 	print("")
 
 
-	printData()
-
-	
-
-
-
-	
 
 
 
