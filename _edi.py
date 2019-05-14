@@ -23,11 +23,6 @@ answers_list=[]
 comments_list=[]
 table_for_report=[]
 
-# file to write code that will design the schematics
-newFile = open("design_schemes.txt", "w")
-
-# newFile.write("[.]<-- -->")
-
 
 
 # TO-DO -> a dict is unordered so the questions will appear in different order
@@ -694,7 +689,7 @@ def convertReport():
 	output_filename = ("FINAL_REPORT.html")
 
 	with open(input_filename,"r" ) as f:
-		html_text= markdown(f.read(), extensions=['markdown.extensions.tables'])  
+		html_text= markdown(f.read(), extensions=[ 'markdown.extensions.tables','markdown.extensions.sane_lists'])  
 	
 
 	out= open(output_filename,"w")
@@ -1032,8 +1027,8 @@ def informationCapture():
 
 	'''
 	# teste para mostrar no terminal o esquema
-	newFile=open("design_schemes.txt", "r")
-	design=newFile.read()
+	designFile=open("design_schemes.txt", "r")
+	design=designFile.read()
 	print( design
 	'''
 	
@@ -1070,43 +1065,163 @@ def processingInformation():
 	
 
 	# constrution of the system model (achiteture)
+	# file to write code that will design the schematics
+	designFile = open("design_schemes.txt", "w")
+
+	designFile.write("[.]")
+
 
 	if questions_and_answers["Q1"].find("1") != -1:
-		newFile.write("[Client] <-- https --> [Server]")
+		designFile.write("<-- -->[Client] <-- https --> [Server]")
 
 	if questions_and_answers["Q1"].find("2") != -1:
-		newFile.write("<-- -->[Web Service]")
+		designFile.write("<-- -->[Web Service]")
 	
 	if questions_and_answers["Q1"].find("3") != -1:
-		newFile.write("<-- -->[Desktop App]")
+		designFile.write("<-- -->[Desktop App]")
 
 	if questions_and_answers["Q1"].find("4") != -1:
-		newFile.write("<-- -->[Mobile]")
+		designFile.write("<-- -->[Mobile]")
 	
 	if questions_and_answers["Q1"].find("5") != -1:
-		newFile.write("<-- -->[Cliente Component]")
+		designFile.write("<-- -->[Cliente Component]")
 	
 	if questions_and_answers["Q1"].find("6") != -1:
-		newFile.write("<-- -->[Server Component]")
+		designFile.write("<-- -->[Server Component]")
 	
 	if questions_and_answers["Q1"].find("7") != -1:
-		newFile.write("<-- -->[API Service]")
+		designFile.write("<-- -->[API Service]")
 
 	if questions_and_answers["Q1"].find("8") != -1:
-		newFile.write("<-- -->[Embedded System]")
+		designFile.write("<-- -->[Embedded System]")
 
 	# ---------------------------------------------------
 	if questions_and_answers["Q2"].find("1") != -1:
-		newFile.write("<-- -->[Database]")
+		designFile.write("[.]<-- -->[Database]")
 
 
-	# newFile.write("<-- -->[.]")
-	newFile.close()
+	 #designFile.write("<-- -->[..]")
+	designFile.close()
 	designWithGraphEasy()
 	
 	# escrever o esquema no report
 	report.write("![alt text](design_schemes.png)")
+	report.write("\n")
+	report.write("\n")
+	report.write("## Authentication  ")
+	report.write("\n")
+	report.write("**Authentication** is the process of verification that an individual, entity or website is who it claims to be. " +
+	 			"Authentication in the context of web applications is commonly performed by submitting a user name or ID and one or " + 
+				"more items of private information that only a given user should know. \n")
+
+	report.write("\n")
+	report.write("**User ID's**		\n" +
+				"Make sure your usernames/userids are case insensitive.	\n" +
+				"User 'smith' and user 'Smith' should be the same user.	\n" +
+				"User names should also be unique. For high security applications usernames could be assigned and secret instead of user-defined public data.	\n" +
+				"Email address as a USER ID.	\n")
 	
+	report.write("\n")
+	report.write("**Password Length**		\n" +
+				"Longer passwords provide a greater combination of characters and consequently make it more difficult for an attacker to guess.		\n"+
+				"Minimum length of the passwords should be enforced by the application.		\n"+
+				"Passwords shorter than 10 characters are considered to be weak		\n"+
+				"Maximum password length should not be set too low, as it will prevent users from creating passphrases.	\n"+
+				"Typical maximum length is 128 characters. \n")
+	
+	report.write("\n")
+	report.write("**Password Complexity**		\n" +  
+				"Applications should enforce password complexity rules to discourage easy to guess passwords.	\n" + 
+				"Password mechanisms should allow virtually any character the user can type to be part of their password, " +  
+				"including the space character. Passwords should, obviously, be case sensitive in order to increase their complexity.	\n\n" +  
+				"The password change mechanism should require a minimum level of complexity that makes sense for the application and its user population.	\n\n" +
+				" * Password must meet at least 3 out of the following 4 complexity rules	\n" + 
+				" * at least 1 uppercase character (A-Z) \n" +
+				" * at least 1 lowercase character (a-z) \n" +
+				" * at least 1 digit (0-9) \n" +
+				" * at least 1 special character (punctuation) space included \n" +
+				" * at least 10 characters \n" +
+				" * at most 128 characters \n" +
+				" * not more than 2 identical characters in a row (e.g. 111 not allowed) \n" )
+	
+	report.write("\n")
+	report.write("**Require Re-authentication for Sensitive Features**	\n" + 
+				"In order to mitigate CSRF and session hijacking, it's important to require the current credentials for an account " +
+				"before updating sensitive account information such as the user's password, user's email, or before sensitive transactions, " +
+				"such as shipping a purchase to a new address. \n" )
+	
+	report.write("\n")
+	report.write("**Authentication and Error Messages**	\n" + 
+				"Incorrectly implemented error messages in the case of authentication functionality can be used for " +
+				"the purposes of user ID and password enumeration. An application should respond (both HTTP and HTML) in a generic manner. \n"
+				"An application should respond with a generic error message regardless of whether the user ID or password was incorrect. " + 
+				"It should also give no indication to the status of an existing account. \n\n" + 
+				"Incorrect Response Examples : \n\n" + 
+				" * Login for User foo: invalid password \n"  +
+				" * Login failed, invalid user ID \n" +
+				" * Login failed; account disabled \n" +
+				" * Login failed; this user is not active \n\n" +
+				"Correct Response Example : \n\n " +
+				" * Login failed; Invalid userID or password")
+	
+	# check if database is choosed
+
+
+	report.write("\n")
+	report.write("\n")
+	report.write("## SQL Injection  ")
+	report.write("\n")
+	report.write(" An SQL injection attack consists of insertion or \"injection\" of either a partial or complete SQL query via " +
+				"the data input or transmitted from the client (browser) to the web application. \n" +
+				" SQL Injection flaws are introduced when software developers create dynamic database queries that include user " +
+				" supplied input. To avoid SQL injection flaws is simple. Developers need to either: \n" +
+				"a) stop writing dynamic queries; \n" +
+				"b) prevent user supplied input which contains malicious SQL from affecting the logic of the executed query. \n\n" +
+				"Primary Defenses: \n\n" +
+				"* Option 1: Use of Prepared Statements (with Parameterized Queries) \n" + 
+				"* Option 2: Use of Stored Procedures \n" +
+				"* Option 3: White List Input Validation \n" +
+				"* Option 4: Escaping All User Supplied Input \n\n" +
+				"Additional Defenses: \n\n" +
+				"* Also: Enforcing Least Privilege \n" +
+				"* Also: Performing White List Input Validation as a Secondary Defense \n")
+
+
+	# check if input forms is used
+	
+	report.write("\n")
+	report.write("\n")
+	report.write("##  Input Validation ")
+	report.write("\n")
+	report.write("**Input validation** is performed to ensure only properly formed data is entering the workflow in an information system, " +
+				"preventing malformed data from persisting in the database and triggering malfunction of various downstream components. \n")
+	report.write("\n")
+	report.write("***Implementing input validation***	\n\n" + 
+				" * Data type validators available natively in web application frameworks \n" +
+				" * Validation against JSON Schema and XML Schema (XSD) for input in these formats. \n" +
+				" * Type conversion (e.g. Integer.parseInt() in Java, int() in Python) with strict exception handling \n" +
+				" * Minimum and maximum value range check for numerical parameters and dates \n" +
+				" * Minimum and maximum length check for strings. \n" +
+				" * Array of allowed values for small sets of string parameters (e.g. days of week). \n" +
+				" * Regular expressions for any other structured data covering the whole input string (^...$) and not using \"any character\" wildcard (such as . or \\S) \n")
+
+	report.write("\n")
+	report.write("**Client Side vs Server Side Validation**		\n" + 
+				"Be aware that any JavaScript input validation performed on the client can be bypassed by an attacker that disables \n" +
+				"JavaScript or uses a Web Proxy. Ensure that any input validation performed on the client is also performed on the server. \n") 
+
+	report.write("\n")
+	report.write("**Email Validation Basics**		\n" +
+				" Many web applications do not treat email addresses correctly due to common misconceptions about what constitutes \n" +
+				" a valid address. Specifically, it is completely valid to have an mailbox address which: \n\n" +
+				" * Is case sensitive in the local portion of the address (left of the rightmost @ character). \n" +
+				" * Has non-alphanumeric characters in the local-part (including + and @). \n" +
+				" * Has zero or more labels. \n\n" +
+				" Following RFC 5321, best practice for validating an email address would be to: \n\n" +
+				" * Check for presence of at least one @ symbol in the address. \n" +
+				" * Ensure the local-part is no longer than 64 octets. \n" +
+				" * Ensure the domain is no longer than 255 octets. \n" +
+				" * Ensure the address is deliverable. \n")
 
 
 
@@ -1114,16 +1229,6 @@ def processingInformation():
 
 	
 	report.close()
-
-
-
-
-
-
-
-
-
-
 	convertReport()
 
 	
