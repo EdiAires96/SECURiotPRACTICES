@@ -7,6 +7,7 @@
 
 import os
 from markdown import markdown
+# import markdown2 
 from xhtml2pdf import pisa
 from svglib.svglib import svg2rlg
 from reportlab.graphics import renderPM
@@ -23,7 +24,9 @@ comments_list=[]
 table_for_report=[]
 
 # file to write code that will design the schematics
-newFile = open("design_schemes.txt", "a+")
+newFile = open("design_schemes.txt", "w")
+
+# newFile.write("[.]<-- -->")
 
 
 
@@ -325,18 +328,6 @@ def arqui(version):
 		
 
 
-		# processing...
-
-		if value == 1:
-			newFile.write("[Client] <-- https --> [Server]")	
-		if value == 3:
-			newFile.write("<-- -->[Desktop App]")
-		if value == 4:
-			newFile.write("<-- -->[Mobile]")
-		if value == 6:
-			newFile.write("<-- -->[Server]")
-
-
 # ----------------------------------------------------------------------------
 def hasDB(version):	
 	print("")
@@ -356,8 +347,6 @@ def hasDB(version):
 	
 	
 	if value == 1:
-		# readAndWriteFile("data_ascii.txt")
-		newFile.write("<-- -->[Database]")
 		typeOfDatabase(version)
 		whichDatabase(version)
 		sensitiveData(version)
@@ -704,9 +693,9 @@ def convertReport():
 
 	output_filename = ("FINAL_REPORT.html")
 
-	with open(input_filename,"r") as f:
-		html_text = markdown(f.read())
-
+	with open(input_filename,"r" ) as f:
+		html_text= markdown(f.read(), extensions=['markdown.extensions.tables'])  
+	
 
 	out= open(output_filename,"w")
 	out.write(html_text)
@@ -760,7 +749,7 @@ def printData():
 
 	# print(list_aux)
 	print("{:22} {:3} {:40} ".format("Architeture", ":", ' ; '.join(list_aux) ) )
-	table_for_report.append("{:22} {:3} {:40} ".format("Architeture", ":", ' ; '.join(list_aux) ))
+	table_for_report.append([ "Architeture" , ' ; '.join(list_aux) ])
 
 	answers_list.append(questions_and_answers["Q1"])
 	comments_list.append(' ; '.join(list_aux))
@@ -772,7 +761,8 @@ def printData():
 		if  item == n:
 			# print( "Has DB {:>18} ".format(":     ") + question_2[n])
 			print("{:22} {:3} {:40} ".format("Has DB", ":" , question_2[n]) )
-			table_for_report.append("{:22} {:3} {:40} ".format("Has DB", ":" , question_2[n]))
+
+			table_for_report.append( [ "Has DB" , question_2[n] ])
 
 			answers_list.append(questions_and_answers["Q2"])
 			comments_list.append(question_2[n])
@@ -783,7 +773,8 @@ def printData():
 	# case this question is not answered, and the answer it will be "N/A"
 	if questions_and_answers["Q3"].isdigit() == False :
 		print( "{:22} {:3} {:40} ".format("Type of data storage", ":",  item) )
-		table_for_report.append("{:22} {:3} {:40} ".format("Type of data storage", ":",  item))
+
+		table_for_report.append(["Type of data storage",  item ])
 
 		answers_list.append(questions_and_answers["Q3"])
 		comments_list.append(item)
@@ -793,7 +784,8 @@ def printData():
 		for n in question_3:					
 			if  item == n:
 				print( "{:22} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]) )
-				table_for_report.append("{:22} {:3} {:40} ".format("Type of data storage", ":",  question_3[n]))
+
+				table_for_report.append([ "Type of data storage", question_3[n] ])
 
 				answers_list.append(questions_and_answers["Q3"])
 				comments_list.append(question_3[n])
@@ -804,7 +796,8 @@ def printData():
 	for n in question_4:		
 		if  item == n :
 			print("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]) )
-			table_for_report.append("{:22} {:3} {:40} ".format( "Which DB", ":", question_4[n]))
+
+			table_for_report.append( [ "Which DB",  question_4[n] ])
 	
 			answers_list.append(questions_and_answers["Q4"])
 			comments_list.append(question_4[n])
@@ -812,7 +805,8 @@ def printData():
 	# case of user input text
 	if item.isdigit() == False: 
 		print("{:22} {:3} {:40} ".format( "Which DB", ":", item ) )
-		table_for_report.append("{:22} {:3} {:40} ".format( "Which DB", ":", item ))
+
+		table_for_report.append( [ "Which DB", item ])
 
 		answers_list.append(questions_and_answers["Q4"])
 		comments_list.append(item)
@@ -845,7 +839,8 @@ def printData():
 				list_aux.append (item)
 
 	print("{:22} {:3} {:40} ".format("Type of data stored" , ":" , ' ; '.join(list_aux) ) )
-	table_for_report.append("{:22} {:3} {:40} ".format("Type of data stored" , ":" , ' ; '.join(list_aux) ))
+
+	table_for_report.append( ["Type of data stored" , ' ; '.join(list_aux) ])
 
 	answers_list.append(questions_and_answers["Q5"])
 	comments_list.append(' ; '.join(list_aux))
@@ -857,7 +852,8 @@ def printData():
 		item = questions_and_answers["Q6"]		
 		if  item == n:
 			print("{:22} {:3} {:40}".format("Authentication", ":" , question_6[n]) )
-			table_for_report.append("{:22} {:3} {:40}".format("Authentication", ":" , question_6[n]))
+
+			table_for_report.append( [ "Authentication" , question_6[n] ])
 
 			answers_list.append(questions_and_answers["Q6"])
 			comments_list.append(question_6[n])
@@ -868,7 +864,8 @@ def printData():
 		item = questions_and_answers["Q7"]		
 		if  item == n:
 			print("{:22} {:3} {:40}".format("User Registration", ":" , question_7[n]) )
-			table_for_report.append("{:22} {:3} {:40}".format("User Registration", ":" , question_7[n]))
+
+			table_for_report.append( ["User Registration" , question_7[n] ])
 
 			answers_list.append(questions_and_answers["Q7"])
 			comments_list.append(question_7[n])
@@ -878,7 +875,8 @@ def printData():
 	item = questions_and_answers["Q8"]
 	if questions_and_answers["Q8"].isdigit() == False:
 		print("{:22} {:3} {:40} ".format("Type of Registration", ": " , item) )
-		table_for_report.append("{:22} {:3} {:40} ".format("Type of Registration", ": " , item))
+
+		table_for_report.append( ["Type of Registration", item ])
 
 		answers_list.append(questions_and_answers["Q8"])
 		comments_list.append(item)
@@ -887,7 +885,8 @@ def printData():
 		for n in question_8:
 			if  item == n:
 				print("{:22} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]) )
-				table_for_report.append("{:22} {:3} {:40} ".format("Type of Registration", ": " , question_8[n]))
+
+				table_for_report.append( [ "Type of Registration", question_8[n] ])
 
 				answers_list.append(questions_and_answers["Q8"])
 				comments_list.append(question_8[n])
@@ -920,7 +919,8 @@ def printData():
 				list_aux.append (item)
 	
 	print("{:22} {:3} {:40} ".format("Programming Languages" , ":" , ' ; '.join(list_aux) ) )
-	table_for_report.append("{:22} {:3} {:40} ".format("Programming Languages" , ":" , ' ; '.join(list_aux) ))
+	
+	table_for_report.append( [ "Programming Languages" , ' ; '.join(list_aux) ])
 
 	answers_list.append(questions_and_answers["Q9"])
 	comments_list.append(' ; '.join(list_aux))
@@ -931,7 +931,8 @@ def printData():
 		item = questions_and_answers["Q10"]		
 		if  item == n:
 			print("{:22} {:3} {:40} ".format("Input Forms" , ":" , question_10[n]) )
-			table_for_report.append("{:22} {:3} {:40} ".format("Input Forms" , ":" , question_10[n]))
+
+			table_for_report.append( ["Input Forms" , question_10[n] ])
 
 			answers_list.append(questions_and_answers["Q10"])
 			comments_list.append(question_10[n])
@@ -943,7 +944,8 @@ def printData():
 		item = questions_and_answers["Q11"]		
 		if  item == n:
 			print("{:22} {:3} {:40} ".format("Upload Files" , ":" , question_11[n]) )
-			table_for_report.append("{:22} {:3} {:40} ".format("Upload Files" , ":" , question_11[n]))
+
+			table_for_report.append( [ "Upload Files" , question_11[n] ])
 
 			answers_list.append(questions_and_answers["Q11"])
 			comments_list.append(question_11[n])
@@ -1034,7 +1036,7 @@ def informationCapture():
 	design=newFile.read()
 	print( design
 	'''
-	newFile.close()
+	
 
 
 
@@ -1053,30 +1055,79 @@ def processingInformation():
 
 	report = open("FINAL_REPORT.md", "w")
 	report.write("# Final Report  " +'\n')
-	report.write("")
-	for l in table_for_report:
-		report.write(l + '\n')
+	report.write("\n")
 	
 
+	report.write("|	 |  | \n")
+	report.write("| :-------- |:---------| \n")
+
+	for i in range( 0,len(table_for_report) ):
+		report.write("| " + table_for_report[i][0] + " | " + table_for_report[i][1] + " | \n" )
+		
+
+	report.write("\n")
+	
+	
+
+	# constrution of the system model (achiteture)
+
+	if questions_and_answers["Q1"].find("1") != -1:
+		newFile.write("[Client] <-- https --> [Server]")
+
+	if questions_and_answers["Q1"].find("2") != -1:
+		newFile.write("<-- -->[Web Service]")
+	
+	if questions_and_answers["Q1"].find("3") != -1:
+		newFile.write("<-- -->[Desktop App]")
+
+	if questions_and_answers["Q1"].find("4") != -1:
+		newFile.write("<-- -->[Mobile]")
+	
+	if questions_and_answers["Q1"].find("5") != -1:
+		newFile.write("<-- -->[Cliente Component]")
+	
+	if questions_and_answers["Q1"].find("6") != -1:
+		newFile.write("<-- -->[Server Component]")
+	
+	if questions_and_answers["Q1"].find("7") != -1:
+		newFile.write("<-- -->[API Service]")
+
+	if questions_and_answers["Q1"].find("8") != -1:
+		newFile.write("<-- -->[Embedded System]")
+
+	# ---------------------------------------------------
+	if questions_and_answers["Q2"].find("1") != -1:
+		newFile.write("<-- -->[Database]")
 
 
-
-
-
-	'''
+	# newFile.write("<-- -->[.]")
+	newFile.close()
 	designWithGraphEasy()
 	
 	# escrever o esquema no report
-	f2=open("guides/example_report.md","a")
-	# f2.write("![alt text](design_schemes.png)")
-	f2.write("![alt text](design_schemes.png)")
-	f2.close()
+	report.write("![alt text](design_schemes.png)")
 	
+
+
+
+
+
+	
+	report.close()
+
+
+
+
+
+
+
+
+
 
 	convertReport()
 
-	report.close()
- '''
+	
+ 	
 
 
 if __name__ == "__main__":
@@ -1128,10 +1179,8 @@ if __name__ == "__main__":
 	print("")
 	print("")
 
-
-
-
-
+	
+	
 	exit(1)
 
 
