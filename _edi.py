@@ -3,11 +3,10 @@
 # Author : Édi Aires
 
 # Work in Progress ...
-# TO-DO -> full integration of input file with answers ; constrution of the final report
+# TO-DO -> Constrution of the final report : adding security guides
 
 import os
 from markdown import markdown
-# import markdown2 
 from xhtml2pdf import pisa
 from svglib.svglib import svg2rlg
 from reportlab.graphics import renderPM
@@ -154,33 +153,6 @@ question_12 = {
 }
 
 
-
-# print(questions_and_answers)
-'''	
-for i in questions_and_answers:
-  	print(i + "  : " + questions_and_answers[i])
-
-	
-print (question_1)
-print (question_2)
-print (question_3)
-print (question_4)
-print (question_5)
-print (question_6)
-print (question_7)
-print (question_8)
-print (question_9)
-print (question_10)
-print (question_11)
-'''
-
-'''
-for k, v in questions_and_answers.items():
-    print(k, v)
-'''
-
-
-
 '''
 >template para as perguntas
 def NAME():
@@ -191,9 +163,6 @@ def NAME():
 	print( "  3 -   ")
 	print( "  4 -   ")
 	print("")
-
-	list.append("Q6-" + str(input("  > ")))
-
 '''
 
 # ----------------------------------------------------------------------------
@@ -737,10 +706,6 @@ def printData():
 			if item.isdigit() == False: 
 				list_aux.append (item)
 
-		'''
-		can put this code above (case of user input text) in other way : 
-		if cant find the answer in the options of the question_1, add the item(= user input text)
-		'''
 
 	# print(list_aux)
 	print("{:22} {:3} {:40} ".format("Architeture", ":", ' ; '.join(list_aux) ) )
@@ -990,9 +955,8 @@ def informationCapture():
 		languages(version)
 		inputForms(version)
 		allowUploadFiles(version)
+
 		# systemLogs()
-
-
 		# users()
 		# nameOfWebServer()
 
@@ -1004,13 +968,7 @@ def informationCapture():
 		print("  **What is the name of the input file ?**  ")
 		print("")
 		readInputFromFile()
-
-		'''
-		for i in ( input_list[0].split(";") ):
-			print ("{} is {}".format(i, type(i)))
-		'''
-
-		
+	
 		questions_and_answers["Q1"] = input_list[0]	
 		questions_and_answers["Q2"] = input_list[1]
 		questions_and_answers["Q3"] = input_list[2]
@@ -1024,24 +982,12 @@ def informationCapture():
 		questions_and_answers["Q11"] = input_list[10]
 
 
-
-	'''
-	# teste para mostrar no terminal o esquema
-	designFile=open("design_schemes.txt", "r")
-	design=designFile.read()
-	print( design
-	'''
-	
-
-
-
-
 #############################################################################################################
 
 # Processing Information main function
 def processingInformation():
 	print("")
-	print("Processing information.....")
+	print("  Processing information.....")
 	print("")
 
 	printData()
@@ -1053,12 +999,15 @@ def processingInformation():
 	report.write("\n")
 	
 
-	report.write("|	 |  | \n")
-	report.write("| :-------- |:---------| \n")
+	report.write("{:3}{:25}{:3}{:60}{:3}\n".format("|", "", "|","" ,"|" ) )
+	report.write("{:3}{:25}{:3}{:60}{:3}\n".format("|", ":--------", "|" , ":---------", "|" ) )
 
+	'''
 	for i in range( 0,len(table_for_report) ):
 		report.write("| " + table_for_report[i][0] + " | " + table_for_report[i][1] + " | \n" )
-		
+	'''	
+	for i in range( 0,len(table_for_report) ):
+		report.write("{:3}{:25}{:3}{:60}{:3}\n".format("|", table_for_report[i][0] , "|" , table_for_report[i][1] , "|" ) )
 
 	report.write("\n")
 	
@@ -1108,294 +1057,55 @@ def processingInformation():
 	report.write("![alt text](design_schemes.png)")
 	report.write("\n")
 	report.write("\n")
-	report.write("## Authentication  ")
-	report.write("\n")
-	report.write("**Authentication** is the process of verification that an individual, entity or website is who it claims to be. " +
-	 			"Authentication in the context of web applications is commonly performed by submitting a user name or ID and one or " + 
-				"more items of private information that only a given user should know. \n")
 
-	report.write("\n")
-	report.write("**User ID's**		\n" +
-				"Make sure your usernames/userids are case insensitive.	\n" +
-				"User 'smith' and user 'Smith' should be the same user.	\n" +
-				"User names should also be unique. For high security applications usernames could be assigned and secret instead of user-defined public data.	\n" +
-				"Email address as a USER ID.	\n")
+	# write authentication guide
+	report.write( open("guides/Authentication_guide.md","r").read() )	
 	
-	report.write("\n")
-	report.write("**Password Length**		\n" +
-				"Longer passwords provide a greater combination of characters and consequently make it more difficult for an attacker to guess.		\n"+
-				"Minimum length of the passwords should be enforced by the application.		\n"+
-				"Passwords shorter than 10 characters are considered to be weak		\n"+
-				"Maximum password length should not be set too low, as it will prevent users from creating passphrases.	\n"+
-				"Typical maximum length is 128 characters. \n")
-	
-	report.write("\n")
-	report.write("**Password Complexity**		\n" +  
-				"Applications should enforce password complexity rules to discourage easy to guess passwords.	\n" + 
-				"Password mechanisms should allow virtually any character the user can type to be part of their password, " +  
-				"including the space character. Passwords should, obviously, be case sensitive in order to increase their complexity.	\n\n" +  
-				"The password change mechanism should require a minimum level of complexity that makes sense for the application and its user population.	\n\n" +
-				" * Password must meet at least 3 out of the following 4 complexity rules	\n" + 
-				" * at least 1 uppercase character (A-Z) \n" +
-				" * at least 1 lowercase character (a-z) \n" +
-				" * at least 1 digit (0-9) \n" +
-				" * at least 1 special character (punctuation) space included \n" +
-				" * at least 10 characters \n" +
-				" * at most 128 characters \n" +
-				" * not more than 2 identical characters in a row (e.g. 111 not allowed) \n" )
-	
-	report.write("\n")
-	report.write("**Require Re-authentication for Sensitive Features**	\n" + 
-				"In order to mitigate CSRF and session hijacking, it's important to require the current credentials for an account " +
-				"before updating sensitive account information such as the user's password, user's email, or before sensitive transactions, " +
-				"such as shipping a purchase to a new address. \n" )
-	
-	report.write("\n")
-	report.write("**Authentication and Error Messages**	\n" + 
-				"Incorrectly implemented error messages in the case of authentication functionality can be used for " +
-				"the purposes of user ID and password enumeration. An application should respond (both HTTP and HTML) in a generic manner. \n"
-				"An application should respond with a generic error message regardless of whether the user ID or password was incorrect. " + 
-				"It should also give no indication to the status of an existing account. \n\n" + 
-				"Incorrect Response Examples : \n\n" + 
-				" * Login for User foo: invalid password \n"  +
-				" * Login failed, invalid user ID \n" +
-				" * Login failed; account disabled \n" +
-				" * Login failed; this user is not active \n\n" +
-				"Correct Response Example : \n\n " +
-				" * Login failed; Invalid userID or password")
 	
 	# check if database is choosed
 
+	report.write("\n")
+	report.write("\n")
 
-	report.write("\n")
-	report.write("\n")
-	report.write("## SQL Injection  ")
-	report.write("\n")
-	report.write(" An SQL injection attack consists of insertion or \"injection\" of either a partial or complete SQL query via " +
-				"the data input or transmitted from the client (browser) to the web application. \n" +
-				" SQL Injection flaws are introduced when software developers create dynamic database queries that include user " +
-				" supplied input. To avoid SQL injection flaws is simple. Developers need to either: \n" +
-				"a) stop writing dynamic queries; \n" +
-				"b) prevent user supplied input which contains malicious SQL from affecting the logic of the executed query. \n\n" +
-				"Primary Defenses: \n\n" +
-				"* Option 1: Use of Prepared Statements (with Parameterized Queries) \n" + 
-				"* Option 2: Use of Stored Procedures \n" +
-				"* Option 3: White List Input Validation \n" +
-				"* Option 4: Escaping All User Supplied Input \n\n" +
-				"Additional Defenses: \n\n" +
-				"* Also: Enforcing Least Privilege \n" +
-				"* Also: Performing White List Input Validation as a Secondary Defense \n")
-
+	# write SQL injection guide
+	report.write( open("guides/SQL_Injection_guide.md","r").read() )	
+	
 
 	# check if input forms is used
 	
+
 	report.write("\n")
 	report.write("\n")
-	report.write("##  Input Validation ")
-	report.write("\n")
-	report.write("**Input validation** is performed to ensure only properly formed data is entering the workflow in an information system, " +
-				"preventing malformed data from persisting in the database and triggering malfunction of various downstream components. \n")
-	report.write("\n")
-	report.write("**Implementing input validation**	\n\n" + 
-				" * Data type validators available natively in web application frameworks \n" +
-				" * Validation against JSON Schema and XML Schema (XSD) for input in these formats. \n" +
-				" * Type conversion (e.g. Integer.parseInt() in Java, int() in Python) with strict exception handling \n" +
-				" * Minimum and maximum value range check for numerical parameters and dates \n" +
-				" * Minimum and maximum length check for strings. \n" +
-				" * Array of allowed values for small sets of string parameters (e.g. days of week). \n" +
-				" * Regular expressions for any other structured data covering the whole input string (^...$) and not using \"any character\" wildcard (such as . or \\S) \n")
+
+	# write input validation guide
+	report.write( open("guides/Input_Validation_guide.md","r").read() )	
 
 
 	report.write("\n")
-	report.write("If it's well structured data, like dates, social security numbers, zip codes, e-mail addresses, etc. " +
-				"then the developer should be able to define a very strong validation pattern, usually based on regular expressions, " +
-				"for validating such input. \n " +
-				"If the input field comes from a fixed set of options, like a drop down list or radio buttons, then the input needs " +
-				"to match exactly one of the values offered to the user in the first place. \n" +
-				"Free-form text, especially with Unicode characters, is perceived as difficult to validate due to a relatively "+
-				"large space of characters that need to be whitelisted. \n"+
-				"The primary means of input validation for free-form text input should be: \n\n" +
+	report.write("\n")
 
-				" * Normalization: Ensure canonical encoding is used across all the text and no invalid characters are present. \n" +
-				" * Character category whitelisting: Unicode allows whitelisting categories such as \"decimal digits\" or \"letters\" which " +
-				" not only covers the Latin alphabet but also various other scripts used globally (e.g. Arabic, Cyryllic, CJK ideographs etc). \n" +
-				" * Individual character whitelisting: If you allow letters and ideographs in names and also want to allow apostrophe ' for Irish names, but don't want to allow the whole punctuation category. \n")
+	# write XSS guide
+	report.write( open("guides/Cross_Site_Scripting_guide.md","r").read() )	
 
 	report.write("\n")
-	report.write("**Client Side vs Server Side Validation**		\n" + 
-				"Be aware that any JavaScript input validation performed on the client can be bypassed by an attacker that disables \n" +
-				"JavaScript or uses a Web Proxy. Ensure that any input validation performed on the client is also performed on the server. \n") 
+	report.write("\n")
+
+	# write Cryptography guide
+	report.write( open("guides/Cryptography_guide.md","r").read() )	
 
 	report.write("\n")
-	report.write("**Email Validation Basics**		\n" +
-				" Many web applications do not treat email addresses correctly due to common misconceptions about what constitutes \n" +
-				" a valid address. Specifically, it is completely valid to have an mailbox address which: \n\n" +
-				" * Is case sensitive in the local portion of the address (left of the rightmost @ character). \n" +
-				" * Has non-alphanumeric characters in the local-part (including + and @). \n" +
-				" * Has zero or more labels. \n\n" +
-				" Following RFC 5321, best practice for validating an email address would be to: \n\n" +
-				" * Check for presence of at least one @ symbol in the address. \n" +
-				" * Ensure the local-part is no longer than 64 octets. \n" +
-				" * Ensure the domain is no longer than 255 octets. \n" +
-				" * Ensure the address is deliverable. \n")
-
-
 	report.write("\n")
-	report.write("##  Cross Site Scripting (XSS)	\n" +
-				" Given the way browsers parse HTML, each of the different types of slots has slightly different security rules. \n" +
-				"When you put untrusted data into these slots, you need to take certain steps to make sure that the data " + 
-				"does not break out of that slot into a context that allows code execution. \n\n" +
-				"HTML entity encoding is okay for untrusted data that you put in the body of the HTML document, " +
-				"such as inside a \"div\" tag. It even sort of works for untrusted data that goes into attributes, " +
-				"particularly if you're religious about using quotes around your attributes. But HTML entity encoding  " +
-				"doesn't work if you're putting untrusted data inside a \"script\" tag anywhere, or an event handler attribute  " +
-				"like onmouseover, or inside CSS, or in a URL. \n" )
+
+	# write Access Control guide
+	report.write( open("guides/Access_Control_guide.md","r").read() )	
 	
-	report.write("\n")
-	report.write("**XSS Prevention Rules**	\n\n" + 
-				" * Never Insert Untrusted Data Except in Allowed Locations - The first rule is to deny all \n" +
-				" * HTML Escape Before Inserting Untrusted Data into HTML Element Content \n" +
-				" * Attribute Escape Before Inserting Untrusted Data into HTML Common Attributes \n" +
-				" * JavaScript Escape Before Inserting Untrusted Data into JavaScript Data Values \n" +
-				" * HTML escape JSON values in an HTML context and read the data with JSON.parse \n" +
-				" * Ensure returned Content-Type header is application/json and not text/html.  \n" +
-				" * CSS Escape And Strictly Validate Before Inserting Untrusted Data into HTML Style Property Values\n" +
-				" * URL Escape Before Inserting Untrusted Data into HTML URL Parameter Values \n" +
-				" * Sanitize HTML Markup with a Library Designed for the Job \n" +
-				" * Prevent DOM-based XSS \n" +	
-				" * Use HTTPOnly cookie flag \n" +
-				" * Implement Content Security Policy \n" +
-				" * Use an Auto-Escaping Template System \n" +
-				" * Use the X-XSS-Protection Response Header \n" +
-				" * Properly use modern JS frameworks like Angular (2+) or ReactJS \n")
 
-
-	report.write("\n")
-	report.write("## Access Control	\n" + 
-				"Authorization is the process where requests to access a particular resource should be granted or denied. "+
-				"It should be noted that authorization is not equivalent to authentication - as these terms and their definitions are frequently confused. \n" + 
-				"Authentication is providing and validating identity. \n" +
-				"Authorization includes the execution rules that determines what functionality and data the user " +
-				"(or Principal) may access, ensuring the proper allocation of access rights after authentication is successful. \n\n" +
-				"Web applications need access controls to allow users (with varying privileges) to use the application. They also need "+
-				"administrators to manage the applications access control rules and the granting of permissions or entitlements to users and other entities. \n\n")
 
 	
-	report.write("\n")
-	report.write("**Role Based Access Control (RBAC)**	\n" + 
-				"Access decisions are based on an individual's roles and responsibilities within the organization or user base. " +
-				"An RBAC access control framework should provide web application security administrators with the ability to "+
-				"determine who can perform what actions, when, from where, in what order, and in some cases under what relational circumstances. \n\n"	+	
-				"Advantages: \n\n"
-				" * Roles are assigned based on organizational structure with emphasis on the organizational security policy \n" +
-	    		" * Easy to use \n" +
-	    		" * Easy to administer \n" +
-	    		" * Built into most frameworks \n" +
-	    		" * Aligns with security principles like segregation of duties and least privileges \n\n" +	
-				"Problems: \n\n"	
-				" * Documentation of the roles and accesses has to be maintained stringently. \n" +	
-    			" * Multi-tenancy can not be implemented effectively unless there is a way to associate the roles with multi-tenancy capability requirements e.g. OU in Active 	Directory	\n" +
-    			" * There is a tendency for scope creep to happen e.g. more accesses and privileges can be given than intended for. Or a user might be included in two roles if proper access reviews and subsequent revocation is not performed.\n" +
-    			" * Does not support data based access control \n\n" +	
-				"Areas of caution: \n\n"
-				"* Roles must be only be transferred or delegated using strict sign-offs and procedures. \n" +	
-	    		"* When a user changes his role to another one, the administrator must make sure that the earlier access is revoked such that at any given point of time, a user is assigned to only those roles on a need to know basis.  \n" +	
-	    		"* Assurance for RBAC must be carried out using strict access control reviews. \n")
 
-
-	report.write("\n")
-	report.write("**Discretionary Access Control (DAC)** \n " +
-				"is a means of restricting access to information based on the identity of users and/or membership in certain groups. "+			
-				"Access decisions are typically based on the authorizations granted to a user based on the credentials he presented at the time of authentication. " +
-				"The owner of information or any resource is able to change its permissions at his discretion. \n\n " +
-				"Advantages: \n\n " +
-				" * Easy to use \n " +
-				" * Easy to administer \n " +
-				" * Aligns to the principle of least privileges. \n " +
-				" * Object owner has total control over access granted \n\n " +
-				"Problems:  \n\n " +
-				" * Documentation of the roles and accesses has to be maintained stringently. \n " +
-				" * Multi-tenancy can not be implemented effectively unless there is a way to associate the roles with multi-tenancy capability requirements   \n " +
-				" * There is a tendency for scope creep to happen e.g. more accesses and privileges can be given than intended for. \n\n " +
-				"Areas of caution: \n\n " +
-				" * While granting trusts \n " +
-				" * Assurance for DAC must be carried out using strict access control reviews.\n")
-
-
-	report.write("\n")
-	report.write("**Mandatory Access Control (MAC)** \n" +
-				"Ensures that the enforcement of organizational security policy does not rely on voluntary web application user compliance. " +
-				"MAC secures information by assigning sensitivity labels on information and comparing this to the level of sensitivity a user is operating at." +
-				"MAC is usually appropriate for extremely secure systems including multilevel secure military applications or mission critical data applications. \n\n" +
-				"Advantages : \n\n" +
-			    " * Access to an object is based on the sensitivity of the object \n" +
-			    " * Access based on need to know is strictly adhered to and scope creep has minimal possibility \n" +
-			    " * Only an administrator can grant access \n\n" +
-				"Problems : \n\n" +
-			    " * Difficult and expensive to implement \n" +
-			    " * Not agile \n\n" +
-				"Areas of caution : \n\n" +
-			    " * Classification and sensitivity assignment at an appropriate and pragmatic level \n" +
-			    " * Assurance for MAC must be carried out to ensure that the classification of the objects is at the appropriate level. \n")
-
-	report.write("\n")
-	report.write("**Permission Based Access Control**	\n" +
-				"Is the abstraction of application actions into a set of permissions. " +
-				"A permission may be represented simply as a string based name, for example \"READ\". " +
-				"Access decisions are made by checking if the current user has the permission associated with the requested application action. \n\n" +
-				"The has relationship between the user and permission may be satisfied by creating a direct relationship between the user " +
-				"and permission (called a grant), or an indirect one. In the indirect model the permission grant is to an intermediate entity such as user group. \n\n"+
-				"A user is considered a member of a user group if and only if the user inherits permissions from the user group.  " +
-				"Systems that provide fine-grained domain object level access control, permissions may be grouped into classes. " +
-				"The system can be associated with a class which determines the permissions applicable to the respective domain object. \n" +
-				">In such a system a \"DOCUMENT\" class may be defined with the permissions \"READ\", \"WRITE\" and \"DELETE\"; a \"SERVER\" class may be defined with the permissions \"START\", \"STOP\", and \"REBOOT\". \n\n")
 
 	
-	report.write("\n")
-	report.write("## Cryptography	\n" +
-				"An architectural decision must be made to determine the appropriate method to protect data at rest. " +
-				"There are such wide varieties of products, methods and mechanisms for cryptographic storage." +
-				"The general practices and required minimum key length depending on the scenario listed below: \n\n" +				
-				" * Key exchange: Diffie-Hellman key exchange with minimum 2048 bits \n" +
-				" * Message Integrity: HMAC-SHA2 \n" +
-				" * Message Hash: SHA2 256 bits \n" +
-				" * Asymmetric encryption: RSA 2048 bits \n" +
-				" * Symmetric encryption: AES 128 bits \n" +
-				" * Password Hashing: Argon2, PBKDF2, Scrypt, Bcrypt \n\n"+
-				"**Secure Cryptographic Storage Design:** \n\n" +
-				" * All protocols and algorithms for authentication and secure communication should be well vetted by the cryptographic community. \n" +
-				" * Ensure certificates are properly validated against the hostnames users  whom they are meant for. \n" +
-				" * Avoid using wildcard certificates unless there is a business need for it \n" +
-				" * Maintain a cryptographic standard to ensure that the developer community knows about the approved ciphersuits " +
-				"for network security protocols, algorithms, permitted use, cryptoperiods and Key Management. \n" +
-				" * Only store sensitive data that you need \n")
 	
-	report.write("\n")
-	report.write("**Use strong approved Authenticated Encryption**		\n" +
-	 			"CCM or GCM are approved Authenticated Encryption modes based on AES algorithm. \n\n" +
-				"**Use strong approved cryptographic algorithms** \n\n" +
-				"* Do not implement an existing cryptographic algorithm on your own, no matter how easy it appears. " +
-				"* Instead, use widely accepted algorithms and widely accepted implementations.  \n " +
-				"* Only use approved public algorithms such as AES, RSA public key cryptography, and SHA-256 or better for hashing. \n " +
-				"* Do not use weak algorithms, such as MD5 or SHA1. \n " +
-				"* Avoid hashing for password storage,instead use Argon2, PBKDF2, bcrypt or scrypt.  \n " +
-				"* See NIST approved algorithms or ISO TR 14742 \"Recommendations on Cryptographic Algorithms or Algorithms\", " +
-			 	"key size and parameters by  European Union Agency for Network and Information Security.  \n " +
-				"* If a password is being used to protect keys then the password strength should be sufficient for the strength of the keys it is protecting.  " +
-				"* When 3DES is used, ensure K1 != K2 != K3, and the minimum key length must be 192 bits .  \n" + 
-				"* Do not use ECB mode for encrypting lots of data (the other modes are better because they chain the blocks of data together to improve the data security).\n")
-	
-	report.write("\n")
-	report.write("**Use strong random numbers**	\n\n " +
-	 			" * Ensure that all random numbers, especially those used for cryptographic parameters (keys, IV's, MAC tags), " +
-				"random file names, random GUIDs, and random strings are generated in a cryptographically strong fashion. \n" +
-	 			" * Ensure that random algorithms are seeded with sufficient entropy. \n" +
-	 			" * Tools like NIST RNG Test tool can be used to comprehensively assess the quality of a Random Number Generator by \n" +
-				"reading e.g. 128MB of data from the RNG source and then assessing its randomness properties with the tool. \n\n" +
-	 			"The following libraries are considered weak random numbers generators and should not be used: \n\n" +
-				"C library: random(), rand(), use getrandom(2) instead		\n" +
-				"Java library: java.util.Random() instead use java.security.SecureRandom instead		\n" +
-				"For secure random number generation, refer to NIST SP 800-90A. CTR-DRBG, HASH-DRBG, HMAC-DRBG are recommended	\n" )
 
 
 
