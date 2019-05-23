@@ -39,7 +39,8 @@ questions_and_answers = {
 	"Q8": "",
 	"Q9": "",
 	"Q10": "",
-	"Q11": ""
+	"Q11": "",
+	"Q12": ""
 }
 
 # Questions
@@ -54,6 +55,7 @@ questions_and_answers = {
 # Q9   -> Programming Languages
 # Q10  -> Input Forms
 # Q11  -> Upload Files
+# Q12  -> Logs
 
 
 # TO -DO -> in case of answer "others" (user input), 
@@ -147,9 +149,8 @@ question_11 = {
 
 
 question_12 = {
-	"1" : "User Activity",
-	"2" : "Error Messages",
-	"3" : "Security Violations"
+	"1" : "Yes",
+	"2" : "No"
 }
 
 
@@ -551,18 +552,16 @@ def systemLogs(version):
 	print("---")
 	print("")
 	if version == 1:
-		print("  **What type of information will show in logs files ?**  ")
+		print("  **The system will have a regist of logs?**  ")
 	else:
-		print("  **What is the type of information shown in logs files ?**  ")
-	print("  (This is a multiple choice question. Enter several options and end with 0.)  ")
+		print("  **The system has a logging regist?**  ")
 	print("")
-	print( "  1 - User Activity  ")
-	print( "  2 - Error Messages  ")
-	print( "  3 - Security Violations  " )
+	print( "  1 - Yes  ")
+	print( "  2 - No  ")
 	print("")
 
-	value = validateInput(1,4)
-	questions_and_answers["Q12"]=questions_and_answers["Q12"] + str(value) + ";"
+	value = validateInput(1,3)
+	questions_and_answers["Q12"]= str(value) 
 
 
 
@@ -910,10 +909,28 @@ def printData():
 			answers_list.append(questions_and_answers["Q11"])
 			comments_list.append(question_11[n])
 
+	# --------------------------------------------
+	for n in question_12:
+		item = questions_and_answers["Q12"]		
+		if  item == n:
+			print("{:22} {:3} {:40} ".format("The system has logs" , ":" , question_12[n]) )
+
+			table_for_report.append( [ "The system has logs" , question_12[n] ])
+
+			answers_list.append(questions_and_answers["Q12"])
+			comments_list.append(question_12[n])
+
+
+
+
+
+
 	# -------------------------------------------
 	# write / generate a file with all answers
 	for i in range(0,len(answers_list)):
 		generate_file.write( "{:20}{:3}{:20}\n".format(answers_list[i] , " # " , comments_list[i] ) )
+
+		
 
 	generate_file.close()
 
@@ -955,8 +972,8 @@ def informationCapture():
 		languages(version)
 		inputForms(version)
 		allowUploadFiles(version)
+		systemLogs(version)
 
-		# systemLogs()
 		# users()
 		# nameOfWebServer()
 
@@ -980,6 +997,8 @@ def informationCapture():
 		questions_and_answers["Q9"] = input_list[8]
 		questions_and_answers["Q10"] = input_list[9]
 		questions_and_answers["Q11"] = input_list[10]
+		questions_and_answers["Q12"] = input_list[11]
+
 
 
 #############################################################################################################
@@ -1058,34 +1077,53 @@ def processingInformation():
 	report.write("\n")
 	report.write("\n")
 
+
+
+
 	# write authentication guide
 	report.write( open("guides/Authentication_guide.md","r").read() )	
 	
-	
+
+	# check if embebbed systems are chosen
+	if questions_and_answers["Q1"].find("8") != -1:
+		report.write("\n")
+		report.write("\n")
+		report.write( open("guides/IOT_Security_guide.md","r").read() )	
+
+
 	# check if database is choosed
+	if questions_and_answers["Q2"].find("1") != -1:
+		report.write("\n")
+		report.write("\n")
 
-	report.write("\n")
-	report.write("\n")
-
-	# write SQL injection guide
-	report.write( open("guides/SQL_Injection_guide.md","r").read() )	
+		# write SQL injection guide
+		report.write( open("guides/SQL_Injection_guide.md","r").read() )	
 	
 
-	# check if input forms is used
-	
+	# check if input forms is used	
+	if questions_and_answers["Q10"].find("1") != -1:
+		report.write("\n")
+		report.write("\n")
 
-	report.write("\n")
-	report.write("\n")
-
-	# write input validation guide
-	report.write( open("guides/Input_Validation_guide.md","r").read() )	
+		# write input validation guide
+		report.write( open("guides/Input_Validation_guide.md","r").read() )	
 
 
-	report.write("\n")
-	report.write("\n")
+	if questions_and_answers["Q1"].find("1") != -1 or questions_and_answers["Q1"].find("2") != -1 : 
+		
+		report.write("\n")
+		report.write("\n")
+		
+		# Session Management guide
+		report.write( open("guides/Session_Management_guide.md","r").read() )	
+		report.write("\n")
+		report.write("\n")
 
-	# write XSS guide
-	report.write( open("guides/Cross_Site_Scripting_guide.md","r").read() )	
+		# write XSS guide
+		report.write( open("guides/Cross_Site_Scripting_guide.md","r").read() )	
+
+
+
 
 	report.write("\n")
 	report.write("\n")
@@ -1093,19 +1131,34 @@ def processingInformation():
 	# write Cryptography guide
 	report.write( open("guides/Cryptography_guide.md","r").read() )	
 
-	report.write("\n")
-	report.write("\n")
 
-	# write Access Control guide
-	report.write( open("guides/Access_Control_guide.md","r").read() )	
+
+	if questions_and_answers["Q7"].find("1") != -1 :
+
+		report.write("\n")
+		report.write("\n")
+
+		# write Access Control guide
+		report.write( open("guides/Access_Control_guide.md","r").read() )	
+		
+
 	
 
+	if questions_and_answers["Q11"].find("1") != -1 :
+
+		# check if file upload are chosen
+
+		report.write("\n")
+		report.write("\n")
+		report.write( open("guides/File_Upload_guide.md","r").read() )	
 
 	
-
-
-	
-	
+	# logging info
+	if questions_and_answers["Q12"].find("1") != -1:
+		report.write("\n")
+		report.write("\n")
+		report.write( open("guides/Logging_guide.md","r").read() )	
+		
 
 
 
