@@ -1077,6 +1077,7 @@ def processingInformation():
 	report.write("\n")
 	report.write("\n")
 
+	
 
 
 
@@ -1098,6 +1099,20 @@ def processingInformation():
 
 		# write SQL injection guide
 		report.write( open("guides/SQL_Injection_guide.md","r").read() )	
+
+	
+	# check if web service are chosen
+	if questions_and_answers["Q1"].find("2") != -1:
+		report.write("\n")
+		report.write("\n")
+		report.write( open("guides/Web_Service_guide.md","r").read() )	
+	
+	
+	# check if API service are chosen
+	if questions_and_answers["Q1"].find("7") != -1:
+		report.write("\n")
+		report.write("\n")
+		report.write( open("guides/API_guide.md","r").read() )	
 	
 
 	# check if input forms is used	
