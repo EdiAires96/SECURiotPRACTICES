@@ -11,7 +11,7 @@ It is part of the outputs of project Project SECURIoTESIGN, with funding with fu
 * Need perl installed
 * In terminal:
   * `perl -MCPAN -e shell`
-  * `install Graph::Easy`
+  * `install Graph::Easy` ---
   See [https://metacpan.org/release/Graph-Easy](https://metacpan.org/release/Graph-Easy)
 
 ***Other packages***
