@@ -51,7 +51,7 @@ If the answer is only the user input text ( option "others") just write the answ
 7
 1
 2
-8-other language
+other language
 2
 1
 
