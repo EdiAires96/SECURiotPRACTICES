@@ -565,56 +565,6 @@ def systemLogs(version):
 
 
 
-'''
-def users(version):
-	print("---")
-	print("")
-	if version == 1:
-		print("  **Users of the system?**  ")
-	else:
-		print("  **Users of the system?**  ")
-	print("")
-	print( "  1 - Internal and External Users  ")
-	print( "  2 - Only Internal Users  ")
-	print( "  3 -  Only External Users  " )
-	print( "  4 -  Admins  " )
-	print("")
-
-	list.append("Q6-" + str(input("  > ")))
-
-
-
-def deployment():
-	print("Deployment : ")
-	print("")
-	print( "  1 - Public - Internet  ")
-	print( "  2 - Private - internal infrastructure  ")
-	print( "  3 - Public Cloud  ")
-	print( "  4 - Private Cloud  ")
-	print("")
-	list.append("Q5-" + str(input("  > ")))
-
-
-
-def nameOfWebServer(version):
-	print("")
-	print("---")
-	print("")
-	if version == 1:
-		print("  **Name of Web Server ?**  ")
-	else:
-		print("  **Name of Web Server ?**  ")
-	print("")
-	print( "  1 - Apache  ")
-	print( "  2 - Microsoft IIS  ")
-	print( "  3 - Nginx  " )
-	print( "  4 - Xamp  ")
-	print( "  5 - The system doesn't use a web server  " )
-	print("")
-
-	list.append("Q-" + str(input("  > ")))
-'''
-
 ##############################################################################################
 
 
@@ -974,8 +924,6 @@ def informationCapture():
 		allowUploadFiles(version)
 		systemLogs(version)
 
-		# users()
-		# nameOfWebServer()
 
 
 	# answers already written in the input file	
