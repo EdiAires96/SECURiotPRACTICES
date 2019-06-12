@@ -40,7 +40,10 @@ questions_and_answers = {
 	"Q9": "",
 	"Q10": "",
 	"Q11": "",
-	"Q12": ""
+	"Q12": "",
+	"Q13": "",
+	"Q14": "",
+	"Q15": ""
 }
 
 # Questions
@@ -56,6 +59,12 @@ questions_and_answers = {
 # Q10  -> Input Forms
 # Q11  -> Upload Files
 # Q12  -> Logs
+# Q13  -> Want specify hardware stuff
+# Q14  -> Way of authentication in hardware
+# Q15  -> Communication modules presents in the hardware
+
+
+
 
 
 # TO -DO -> in case of answer "others" (user input), 
@@ -153,6 +162,32 @@ question_12 = {
 	"2" : "No"
 }
 
+question_13 = {
+	"1" : "Yes",
+	"2" : "No"
+}
+
+question_14 = {
+	"1" : "No Authentication",
+	"2" : "Symmetric Key",
+	"3" : "Basic Authentication (user/pass)",
+	"4" : "Certificates (X.509) ",
+	"5" : "TPM (Trusted Platform Module)"
+}
+
+question_15 = {
+	"1" : "4G / LTE",
+	"2" : "3G",
+	"3" : "GSM (2G)",
+	"4" : "Radio Frequency",
+	"5" : "Bluetooth ",
+	"6" : "Wi-Fi ",
+	"7" : "GPS ",
+	"8" : "RFID ",
+	"9" : "NFC"
+}
+
+
 
 '''
 >template para as perguntas
@@ -198,7 +233,6 @@ def readInputFromFile():
 # if one argument is pass, it means what to validate
 # if two arguments are pass it means that is to valide a int and
 # there is a number of options to put in range
-
 # means of arguments respectively
 # arg(1) what to validate -> if it is to validate a int or a string (1 or 2)
 # arg(2) n_options -> number of options in the question (==range)
@@ -313,7 +347,8 @@ def hasDB(version):
 	
 	if value == 1:
 		typeOfDatabase(version)
-		whichDatabase(version)
+		if questions_and_answers["Q3"] == '1' or questions_and_answers["Q3"] == '2':
+			whichDatabase(version)
 		sensitiveData(version)
 
 	else:
@@ -354,16 +389,21 @@ def whichDatabase(version):
 		print("  **What is the Database used ?**  ")
 	
 	print("")
-	print( "  1 - SQL Server  ")	
-	print( "  2 - MySQL  ")
-	print( "  3 - PostgreSQL  ")
-	print( "  4 - SQLite  ")
-	print( "  5 - OracleDB  ")
-	print( "  6 - MariaDB  ")
-	print( "  7 - MongoDB  ")
-	print( "  8 - CosmosDB  ")
-	print( "  9 - DynamoDB  ")
-	print( "  10 - Cassandra  ")
+
+	if questions_and_answers["Q3"] == '1':
+		print( "  1 - SQL Server  ")	
+		print( "  2 - MySQL  ")
+		print( "  3 - PostgreSQL  ")
+		print( "  4 - SQLite  ")
+		print( "  5 - OracleDB  ")
+		print( "  6 - MariaDB  ")
+
+	if questions_and_answers["Q3"] == '2':
+		print( "  7 - MongoDB  ")
+		print( "  8 - CosmosDB  ")
+		print( "  9 - DynamoDB  ")
+		print( "  10 - Cassandra  ")
+
 	print( "  11 - Other  ")
 	print("")
 	
@@ -562,6 +602,82 @@ def systemLogs(version):
 
 	value = validateInput(1,3)
 	questions_and_answers["Q12"]= str(value) 
+
+# ----------------------------------------------------------------------------
+def hardwareSpecs(version):
+	print("")
+	print("---")
+	print("")
+	print("  **Do you want to further specify hardware details concerning the system ?**  ")
+	print("")
+	print( "  1 - Yes  ")
+	print( "  2 - No  ")
+	print("")
+
+	value = validateInput(1,3)
+	questions_and_answers["Q13"]= str(value) 
+
+	if value == 1:
+		hardwareAuth(version)
+		hardwareComunication(version)
+	else:
+		questions_and_answers["Q14"] = "N/A"
+		questions_and_answers["Q15"] = "N/A"
+
+
+
+# ----------------------------------------------------------------------------
+def hardwareAuth(version):
+	print("")
+	print("---")
+	print("")
+	if version == 1:
+		print("  **What will be the type of authentication implemented in hardware?**  ")
+	else:
+		print("  **What is the type of authentication implemented in hardware?**  ")
+	print("")
+	print( "  1 - No Authentication   ") 
+	print( "  2 - Symmetric Key   ")
+	print( "  3 - Basic Authentication (user/pass)  ")	
+	print( "  4 - Certificates (X.509)   ")
+	print( "  5 - TPM (Trusted Platform Module)  ")
+	print("")
+
+	value = validateInput(1,6)
+	questions_and_answers["Q14"]= str(value) 
+
+
+# ----------------------------------------------------------------------------
+def hardwareComunication(version):
+	print("")
+	print("---")
+	print("")
+	if version == 1:
+		print("  **What will be the wireless tecnologies presents in hardware?**  ")
+	else:
+		print("  **What are the wireless tecnologies presents in hardware**  ")
+	print("")
+	print( "  1 - 4G / LTE ")
+	print( "  2 - 3G  ")
+	print( "  3 - GSM (2G)  ") 
+	print( "  4 - Radio Frequency  ")
+	print( "  5 - Bluetooth  ")
+	print( "  6 - Wi-Fi  ")
+	print( "  7 - GPS  ")
+	print( "  8 - RFID  ")
+	print( "  9 - NFC  ")
+	print("")
+
+	while(1):
+		value = validateInput(1,10)
+		if value == 0:
+			return
+		else:
+			questions_and_answers["Q15"]= questions_and_answers["Q15"] + str(value) + ";" 
+
+
+
+
 
 
 
@@ -871,6 +987,62 @@ def printData():
 			comments_list.append(question_12[n])
 
 
+	# --------------------------------------------
+	for n in question_13:
+		item = questions_and_answers["Q13"]		
+		if  item == n:
+			print("{:22} {:3} {:40} ".format("Hardware Specification" , ":" , question_13[n]) )
+
+			table_for_report.append( [ "Hardware Specification" , question_13[n] ])
+
+			answers_list.append(questions_and_answers["Q13"])
+			comments_list.append(question_13[n])
+
+	# --------------------------------------------
+	for n in question_14:
+		item = questions_and_answers["Q14"]		
+		if  item == n:
+			print("{:22} {:3} {:40} ".format("HW Authentication" , ":" , question_14[n]) )
+
+			table_for_report.append( [ "HW Authentication" , question_14[n] ])
+
+			answers_list.append(questions_and_answers["Q14"])
+			comments_list.append(question_14[n])
+
+
+	# --------------------------------------------
+	list_aux = []	
+	# it is a multiple question
+	
+	# find if the answer correspond to option "others" (means that is only user input text)
+	if questions_and_answers["Q15"][0].isdigit() == False and questions_and_answers["Q15"].find(";") == -1:
+		list_aux.append( questions_and_answers["Q15"])
+
+	else:
+
+		# cut the string in the delimitator ";" 
+		aux = questions_and_answers["Q15"].split(";")
+
+		#delete last item (= None)
+		aux = aux[:-1]
+
+			
+		for item in aux:
+			for option in question_15:		
+				if  item == option:
+					list_aux.append( question_15[option] )
+
+			# case of user input text
+			if item.isdigit() == False: 
+				list_aux.append (item)
+	
+	print("{:22} {:3} {:40} ".format("HW Wireless Tech" , ":" , ' ; '.join(list_aux) ) )
+	
+	table_for_report.append( [ "HW Wireless Tech" , ' ; '.join(list_aux) ])
+
+	answers_list.append(questions_and_answers["Q15"])
+	comments_list.append(' ; '.join(list_aux))
+
 
 
 
@@ -923,7 +1095,8 @@ def informationCapture():
 		inputForms(version)
 		allowUploadFiles(version)
 		systemLogs(version)
-
+		
+		hardwareSpecs(version)
 
 
 	# answers already written in the input file	
@@ -946,6 +1119,9 @@ def informationCapture():
 		questions_and_answers["Q10"] = input_list[9]
 		questions_and_answers["Q11"] = input_list[10]
 		questions_and_answers["Q12"] = input_list[11]
+		questions_and_answers["Q13"] = input_list[12]
+		questions_and_answers["Q14"] = input_list[13]
+		questions_and_answers["Q15"] = input_list[14]
 
 
 
